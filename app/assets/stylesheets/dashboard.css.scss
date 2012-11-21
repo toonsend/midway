@@ -1,0 +1,39 @@
+body {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+/* Custom container */
+.container-narrow {
+  margin: 0 auto;
+  max-width: 700px;
+}
+.container-narrow > hr {
+  margin: 10px 0;
+}
+
+/* Main marketing message and sign up button */
+.jumbotron {
+  margin: 36px 0;
+  text-align: center;
+}
+.jumbotron h1 {
+  font-size: 48px;
+  line-height: 1;
+}
+.jumbotron .btn {
+  font-size: 18px;
+  padding: 14px 24px;
+}
+
+/* Supporting marketing content */
+.marketing {
+  margin: 36px 0;
+}
+.marketing p + h4 {
+  margin-top: 18px;
+}
+
+.nav .navbar-text{
+  padding-right: 10px;
+}

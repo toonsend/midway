@@ -1,0 +1,24 @@
+<div class="masthead">
+  <% if current_user %>
+  <ul class="nav nav-pills pull-right">
+    <li>
+      <p class="navbar-text">
+        <%= current_user.email %>
+      </p>
+    </li>
+    <li class="active">
+      <%= link_to "Home", root_url %>
+    </li>
+    <li>
+      <%= link_to "Key", key_path %>
+    </li>
+    <li>
+      <%= link_to "Api", api_path %>
+    </li>
+    <li>
+      <%= link_to "Logout",  destroy_user_session_path, :method => :delete %>
+    </li>
+  </ul>
+  <% end %>
+  <h3 class="muted">Midway</h3>
+</div>
