@@ -67,6 +67,7 @@ Adds a map to your team's list.  You need to upload at least one map before you 
 
 * [[2, 1, 5, "across"], [0, 3, 4, "down"], [2, 6, 3, "across"], [6, 4, 3, "across"], [3, 4, 2, "down"]] would be
 
+
 | |0|1|2|3|4|5|6|7|8|9|
 |-|-|-|-|-|-|-|-|-|-|-|
 |0| | | | | | | | | | |
@@ -116,3 +117,61 @@ The new map. If the POST was not successful then status code 422 will be returne
 * TOO_MANY_SHIPS, Too many ships
 * SHIPS_OVERLAP, Ships in collision
 * OUT_OF_RANGE, Ships are positioned outside of map
+
+
+##GET /teams/:team_id/game
+
+This returns the state of the current game
+
+### Request Parameters
+
+_none_
+
+### Example Request
+
+```
+curl -H "Midway-API-Key: 333333" -H "Content-Type: application/json" http://localhost:3000/teams/2/game
+```
+
+### Example Response
+
+{
+  "game_id": "2",
+  "grid": ["oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxo"]
+}
+
+##POST /teams/:team_id/game
+
+This plays your next move in the current game.  Games are started and ended automatically.
+
+### Request Parameters
+
+* **move** A two element array with the x and y position of your move
+
+### Return Parameters
+
+* **game_id** The id of the current game
+* **grid**  The current grid with 'x' marking any hit position
+* **opponent_id** Your opponents team id
+* **status** Status of the move can be "miss", "hit", "hit and destroyed"
+* **move** A two element array with the x and y position of your move
+* **game_status** Game status can be 'playing', 'ended'
+* **moves** Current move count
+
+### Example Request
+
+```
+curl -H "Midway-API-Key: 333333" -H "Content-Type: application/json" -X POST -d '{"move":[2,1]}' http://localhost:3000/teams/2/game
+```
+
+### Example Response
+
+{
+  "game_id": 2,
+  "grid": ["oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxo"]
+  "opponent_id": 3,
+  "status": "hit",
+  "move": [2,1],
+  "game_status": "ended",
+  "moves": 34
+}
