@@ -135,10 +135,12 @@ curl -H "Midway-API-Key: 333333" -H "Content-Type: application/json" http://loca
 
 ### Example Response
 
+```
 {
   "game_id": "2",
   "grid": ["oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxo"]
 }
+```
 
 ##POST /teams/:team_id/game
 
@@ -166,6 +168,7 @@ curl -H "Midway-API-Key: 333333" -H "Content-Type: application/json" -X POST -d 
 
 ### Example Response
 
+```
 {
   "game_id": 2,
   "grid": ["oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxo"]
@@ -175,3 +178,4 @@ curl -H "Midway-API-Key: 333333" -H "Content-Type: application/json" -X POST -d 
   "game_status": "ended",
   "moves": 34
 }
+```
