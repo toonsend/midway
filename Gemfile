@@ -25,6 +25,7 @@ group :development, :test do
   gem 'ZenTest', '~> 4.8.1'
   gem 'autotest-growl', '~> 0.2.16'
   gem 'autotest-rails-pure', '~> 4.1.2'
+  gem 'sqlite3', '~> 1.3.4'
 end
 
 group :test do
