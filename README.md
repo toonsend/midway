@@ -108,8 +108,8 @@ The new map. If the POST was not successful then status code 422 will be returne
 
 ```
 {
-  "error_code": "INVALID_MAP",
-  "message": "The map is invalid"
+  "error_code": "OUT_OF_RANGE",
+  "message": "Ships are positioned outside of map"
 }
 ```
 
@@ -117,6 +117,7 @@ The new map. If the POST was not successful then status code 422 will be returne
 * TOO_MANY_SHIPS, Too many ships
 * SHIPS_OVERLAP, Ships in collision
 * OUT_OF_RANGE, Ships are positioned outside of map
+* BADLY_FORMED_REQUEST, Request is invalid
 
 
 ##GET /teams/:team_id/game
@@ -179,3 +180,17 @@ curl -H "Midway-API-Key: 333333" -H "Content-Type: application/json" -X POST -d 
   "moves": 34
 }
 ```
+
+###Errors
+
+```
+{
+  "error_code": "OUT_OF_RANGE",
+  "message": "move is outside of map"
+}
+```
+
+* OUT_OF_RANGE, move is outside of map
+* NO_GAME, There is currently no game to play
+* BADLY_FORMED_REQUEST, Request is invalid
+* NO_MAPS_UPLOADED, Your team does not have any maps so can not enter tournament
