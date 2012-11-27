@@ -55,7 +55,7 @@ Adds a map to your team's list.  You need to upload at least one map before you 
 
 ###Request Parameters
 
-* **grid** map in a five element array of ships. A ship is of the form x pos, y pos, direction of ship.  The grid must contain
+* **grid** map in a five element array of ships. A ship is of the form x pos, y pos, ship size, direction of ship.  The grid must contain
 
 | Type of ships    | Size |
 |------------------|------|
@@ -108,15 +108,16 @@ The new map. If the POST was not successful then status code 422 will be returne
 
 ```
 {
-  "error_code": "OUT_OF_RANGE",
+  "error_code": "SHIP_OUT_OF_BOUNDS",
   "message": "Ships are positioned outside of map"
 }
 ```
 
 * NOT_ENOUGH_SHIPS, Not enough ships
 * TOO_MANY_SHIPS, Too many ships
+* WRONG_SHIP_SIZE, Ships are not of the required size
 * SHIPS_OVERLAP, Ships in collision
-* OUT_OF_RANGE, Ships are positioned outside of map
+* SHIP_OUT_OF_BOUNDS, Ship is positioned outside of map
 * BADLY_FORMED_REQUEST, Request is invalid
 
 
