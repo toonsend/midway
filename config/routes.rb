@@ -27,6 +27,11 @@ Midway::Application.routes.draw do
   #     end
   #   end
 
+  resources :teams do
+    resources :game
+    resources :maps
+  end
+
   root :to => "dashboard#index"
   match "/api" => "dashboard#api", :as => :api
   match "/key" => "dashboard#key", :as => :key
