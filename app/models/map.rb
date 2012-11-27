@@ -19,6 +19,10 @@ class Map < ActiveRecord::Base
     end
   end
 
+  def grid_error
+    errors[:grid][0]
+  end
+
   private
 
   def fill_game_grid
