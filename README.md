@@ -1,7 +1,7 @@
-# MIDWAY
-# The Velti Battleship Tournament Server
+#MIDWAY
+#The Velti Battleship Tournament Server
 
-## Request Authentication
+##Request Authentication
 
 In the http header of any request you need to include your Midway API key
 
@@ -9,7 +9,7 @@ In the http header of any request you need to include your Midway API key
 curl -H "Midway-API-Key: 333333" http://localhost:3000/teams/2/maps
 ```
 
-### Errors
+###Errors
 
 ```
 {
@@ -28,13 +28,13 @@ curl -H "Midway-API-Key: 333333" http://localhost:3000/teams/2/maps
 
 _none_
 
-### Example Request
+###Example Request
 
 ```
 curl -H "Midway-API-Key: 333333" -H "Content-Type: application/json" http://localhost:3000/teams/2/maps
 ```
 
-### Example Response
+###Example Response
 
 The list of your maps.
 
@@ -53,9 +53,9 @@ The list of your maps.
 
 Adds a map to your team's list.  You need to upload at least one map before you can play
 
-### Request Parameters
+###Request Parameters
 
-* **grid** map in a ten element array, a ships position is marked with an 'x'. The grid is of the form x pos, y pos, direction of ship.  The grid must contain
+* **grid** map in a five element array of ships. A ship is of the form x pos, y pos, direction of ship.  The grid must contain
 
 | Type of ships    | Size |
 |------------------|------|
@@ -83,13 +83,13 @@ Adds a map to your team's list.  You need to upload at least one map before you 
 | 9 |   |   |   |   |   |   |   |   |   |   |
 
 
-### Example Request
+###Example Request
 
 ```
 curl -H "Midway-API-Key: 333333" -H "Content-Type: application/json" -X POST -d '{"grid":[[2, 1, 5, "across"], [0, 3, 4, "down"], [2, 6, 3, "across"], [6, 4, 3, "across"], [3, 4, 2, "down"]]}' http://localhost:3000/teams/2/maps
 ```
 
-### Example Response
+###Example Response
 
 The new map. If the POST was not successful then status code 422 will be returned along with the error which prevented the map from being created.
 
@@ -104,7 +104,7 @@ The new map. If the POST was not successful then status code 422 will be returne
 ```
 
 
-### Errors
+###Errors
 
 ```
 {
@@ -123,17 +123,17 @@ The new map. If the POST was not successful then status code 422 will be returne
 
 This returns the state of the current game
 
-### Request Parameters
+###Request Parameters
 
 _none_
 
-### Example Request
+###Example Request
 
 ```
 curl -H "Midway-API-Key: 333333" -H "Content-Type: application/json" http://localhost:3000/teams/2/game
 ```
 
-### Example Response
+###Example Response
 
 ```
 {
@@ -146,11 +146,11 @@ curl -H "Midway-API-Key: 333333" -H "Content-Type: application/json" http://loca
 
 This plays your next move in the current game.  Games are started and ended automatically.
 
-### Request Parameters
+###Request Parameters
 
 * **move** A two element array with the x and y position of your move
 
-### Return Parameters
+###Return Parameters
 
 * **game_id** The id of the current game
 * **grid**  The current grid with 'x' marking any hit position
@@ -160,13 +160,13 @@ This plays your next move in the current game.  Games are started and ended auto
 * **game_status** Game status can be 'playing', 'ended'
 * **moves** Current move count
 
-### Example Request
+###Example Request
 
 ```
 curl -H "Midway-API-Key: 333333" -H "Content-Type: application/json" -X POST -d '{"move":[2,1]}' http://localhost:3000/teams/2/game
 ```
 
-### Example Response
+###Example Response
 
 ```
 {
