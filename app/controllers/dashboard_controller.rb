@@ -7,6 +7,7 @@ class DashboardController < ApplicationController
   end
 
   def key
+    @key = current_user.get_api_key
   end
 
 end
