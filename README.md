@@ -17,6 +17,7 @@ curl -H "Midway-API-Key: 333333" http://localhost:3000/teams/2/maps
   "message": "The api key does not match the team_id"
 }
 ```
+
 * INVALID_API_KEY, Api Key does not match team id
 * INVALID_TEAM_ID, Team Id does not exist
 * MISSING_API_KEY, Api Key is missing
@@ -43,8 +44,8 @@ The list of your maps.
 
 ```
 {
-  "grids": { 1 => ["oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxo"],
-             2 => ["oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxo"]}
+  "grids": { 1 => [[0, 0, 5, "across"], [6, 2, 4, "across"], [3, 6, 3, "down"], [7, 8, 3, "across"], [4, 6, 2, "across"]],
+             2 => [[2, 1, 5, "across"], [0, 3, 4, "down"], [2, 6, 3, "across"], [6, 4, 3, "across"], [3, 4, 2, "down"]]}
 }
 ```
 
@@ -54,7 +55,7 @@ Adds a map to your team's list.  You need to upload at least one map before you 
 
 ### Request Parameters
 
-* **grid** map in a ten element array, a ships position is marked with an 'x'. The grid must contain
+* **grid** map in a ten element array, a ships position is marked with an 'x'. The grid is of the form x pos, y pos, direction of ship.  The grid must contain
 
 | Type of ships    | Size |
 |------------------|------|
@@ -64,15 +65,32 @@ Adds a map to your team's list.  You need to upload at least one map before you 
 | cruiser          | 3    |
 | destroyer        | 2    |
 
+* [[2, 1, 5, "across"], [0, 3, 4, "down"], [2, 6, 3, "across"], [6, 4, 3, "across"], [3, 4, 2, "down"]] would be
+
+| |0|1|2|3|4|5|6|7|8|9|
+|-|-|-|-|-|-|-|-|-|-|-|
+|0| | | | | | | | | | |
+|1| | |x|x|x|x|x| | | |
+|2| | | | | | | | | | |
+|3|x| | | | | | | | | |
+|4|x| | |x| | |x|x|x| |
+|5|x| | |x| | | | | | |
+|6|x| |x|x|x| | | | | |
+|7| | | | | | | | | | |
+|8| | | | | | | | | | |
+|8| | | | | | | | | | |
+|9| | | | | | | | | | |
+
+
 ### Example Request
 
 ```
-curl -H "Midway-API-Key: 333333" -H "Content-Type: application/json" -X POST -d '{"grid":["oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxo"]}' http://localhost:3000/teams/2/maps
+curl -H "Midway-API-Key: 333333" -H "Content-Type: application/json" -X POST -d '{"grid":[[2, 1, 5, "across"], [0, 3, 4, "down"], [2, 6, 3, "across"], [6, 4, 3, "across"], [3, 4, 2, "down"]]}' http://localhost:3000/teams/2/maps
 ```
 
 ### Example Response
 
-The new map. If the POST was not successful then status code 422 will be returned along with the error which prevented the service from being created.
+The new map. If the POST was not successful then status code 422 will be returned along with the error which prevented the map from being created.
 
 * **id** Unique identifier for the map, used to update or delete it
 * **error_code** An error code, if applicable.
@@ -94,4 +112,7 @@ The new map. If the POST was not successful then status code 422 will be returne
 }
 ```
 
-* INVALID_MAP, The map is invalid
+* NOT_ENOUGH_SHIPS, Not enough ships
+* TOO_MANY_SHIPS, Too many ships
+* SHIPS_OVERLAP, Ships in collision
+* OUT_OF_RANGE, Ships are positioned outside of map
