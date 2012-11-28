@@ -125,6 +125,7 @@ GEM
     rake (10.0.2)
     rdoc (3.12)
       json (~> 1.4)
+    redcarpet (1.17.2)
     rspec (2.11.0)
       rspec-core (~> 2.11.0)
       rspec-expectations (~> 2.11.0)
@@ -198,6 +199,7 @@ DEPENDENCIES
   jquery-rails
   mysql2
   rails (= 3.2.9)
+  redcarpet (= 1.17.2)
   rspec-rails (~> 2.11.4)
   rvm-capistrano
   sass-rails (~> 3.2.3)

@@ -1,12 +1,12 @@
-#MIDWAY
 #The Velti Battleship Tournament Server
 
+***
 ##Request Authentication
 
 In the http header of any request you need to include your Midway API key
 
 ```
-curl -H "HTTP_MIDWAY_API_KEY: 333333" http://localhost:3000/teams/2/maps
+curl -H "HTTP_MIDWAY_API_KEY: <%= @api_key %>" http://localhost:3000/teams/<%= @team_id %>/maps
 ```
 
 ###Errors
@@ -22,6 +22,7 @@ curl -H "HTTP_MIDWAY_API_KEY: 333333" http://localhost:3000/teams/2/maps
 * INVALID_TEAM_ID, Team Id does not exist
 * MISSING_API_KEY, Api Key is missing
 
+***
 ##GET /teams/:team_id/maps
 
 ###Request paramaters:
@@ -31,7 +32,7 @@ _none_
 ###Example Request
 
 ```
-curl -H "HTTP_MIDWAY_API_KEY: 333333" -H "Content-Type: application/json" http://localhost:3000/teams/2/maps
+curl -H "HTTP_MIDWAY_API_KEY: <%= @api_key %>" -H "Content-Type: application/json" http://localhost:3000/teams/<%= @team_id %>/maps
 ```
 
 ###Example Response
@@ -49,6 +50,7 @@ The list of your maps.
 }
 ```
 
+***
 ##POST /teams/:team_id/maps
 
 Adds a map to your team's list.  You need to upload at least one map before you can play
@@ -57,6 +59,7 @@ Adds a map to your team's list.  You need to upload at least one map before you 
 
 * **grid** map in a five element array of ships. A ship is of the form x pos, y pos, ship size, direction of ship.  The grid must contain
 
+```
 | Type of ships    | Size |
 |------------------|------|
 | aircraft carrier | 5    |
@@ -64,10 +67,12 @@ Adds a map to your team's list.  You need to upload at least one map before you 
 | submarine        | 3    |
 | cruiser          | 3    |
 | destroyer        | 2    |
+```
 
 * [[2, 1, 5, "across"], [0, 3, 4, "down"], [2, 6, 3, "across"], [6, 4, 3, "across"], [3, 4, 2, "down"]] would be
 
 
+```
 |   | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |
 |---|---|---|---|---|---|---|---|---|---|---|
 | 0 |   |   |   |   |   |   |   |   |   |   |
@@ -81,12 +86,13 @@ Adds a map to your team's list.  You need to upload at least one map before you 
 | 8 |   |   |   |   |   |   |   |   |   |   |
 | 8 |   |   |   |   |   |   |   |   |   |   |
 | 9 |   |   |   |   |   |   |   |   |   |   |
+```
 
 
 ###Example Request
 
 ```
-curl -H "HTTP_MIDWAY_API_KEY: 333333" -H "Content-Type: application/json" -X POST -d '{"grid":[[2, 1, 5, "across"], [0, 3, 4, "down"], [2, 6, 3, "across"], [6, 4, 3, "across"], [3, 4, 2, "down"]]}' http://localhost:3000/teams/2/maps
+curl -H "HTTP_MIDWAY_API_KEY: <%= @api_key %>" -H "Content-Type: application/json" -X POST -d '{"grid":[[2, 1, 5, "across"], [0, 3, 4, "down"], [2, 6, 3, "across"], [6, 4, 3, "across"], [3, 4, 2, "down"]]}' http://localhost:3000/teams/<%= @team_id %>/maps
 ```
 
 ###Example Response
@@ -121,6 +127,7 @@ The new map. If the POST was not successful then status code 422 will be returne
 * BADLY_FORMED_REQUEST, Request is invalid
 
 
+***
 ##GET /teams/:team_id/game
 
 This returns the state of the current game
@@ -132,7 +139,7 @@ _none_
 ###Example Request
 
 ```
-curl -H "HTTP_MIDWAY_API_KEY: 333333" -H "Content-Type: application/json" http://localhost:3000/teams/2/game
+curl -H "HTTP_MIDWAY_API_KEY: <%= @api_key %>" -H "Content-Type: application/json" http://localhost:3000/teams/<%= @team_id %>/game
 ```
 
 ###Example Response
@@ -144,6 +151,8 @@ curl -H "HTTP_MIDWAY_API_KEY: 333333" -H "Content-Type: application/json" http:/
 }
 ```
 
+
+***
 ##POST /teams/:team_id/game
 
 This plays your next move in the current game.  Games are started and ended automatically.
@@ -165,7 +174,7 @@ This plays your next move in the current game.  Games are started and ended auto
 ###Example Request
 
 ```
-curl -H "HTTP_MIDWAY_API_KEY: 333333" -H "Content-Type: application/json" -X POST -d '{"move":[2,1]}' http://localhost:3000/teams/2/game
+curl -H "HTTP_MIDWAY_API_KEY: <%= @api_key %>" -H "Content-Type: application/json" -X POST -d '{"move":[2,1]}' http://localhost:3000/teams/<%= @team_id %>/game
 ```
 
 ###Example Response
