@@ -10,8 +10,8 @@ class MapPresenter
     puts "GAME GRID"
     puts "____________________"
     game_grid = @map.game_grid
-    10.times do |x|
-      10.times do |y|
+    10.times do |y|
+      10.times do |x|
         print game_grid[x][y] + '|'
       end
       puts ""
