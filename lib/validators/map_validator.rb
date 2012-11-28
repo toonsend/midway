@@ -3,10 +3,19 @@ class MapValidator < ActiveModel::Validator
   VALID_FLEET = [5,4,3,3,2].sort
 
   def validate(record)
+    validate_grid(record)
     validate_fleet_size(record)
     validate_ship_sizes(record)
     validate_ship_positions(record)
   end
+
+  def validate_grid(record)
+    unless record.grid.is_a?(Array)
+      record.errors.add(:grid, "BADLY_FORMED_REQUEST")
+      record.grid = []
+    end
+  end
+
 
   def validate_fleet_size(record)
     if record.grid && record.grid.length < 5

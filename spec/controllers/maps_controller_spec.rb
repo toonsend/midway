@@ -43,7 +43,8 @@ describe MapsController do
       user = FactoryGirl.create(:user)
       user.generate_api_key!
       request.env['HTTP_MIDWAY_API_KEY'] = user.api_key
-      post :create, {:team_id => user.id, :grid => valid_grid_params}
+      grid_params = JSON.parse(valid_grid_params)
+      post :create, {:team_id => user.id, :grid => grid_params}
       response.status.should == 200
       res = JSON::parse(response.body)
       res["id"].should == Map.first.id
@@ -62,7 +63,7 @@ describe MapsController do
     it "should return not enough ships" do
       grid_params = JSON.parse(valid_grid_params)
       grid_params.delete_at(0)
-      post :create, {:team_id => @user.id, :grid => grid_params.to_json}
+      post :create, {:team_id => @user.id, :grid => grid_params}
       response.status.should == 422
       res = JSON::parse(response.body)
       res["error_code"].should == "NOT_ENOUGH_SHIPS"
@@ -71,7 +72,7 @@ describe MapsController do
     it "should return too many ships" do
       grid_params = JSON.parse(valid_grid_params)
       grid_params << [6, 2, 4, "across"]
-      post :create, {:team_id => @user.id, :grid => grid_params.to_json}
+      post :create, {:team_id => @user.id, :grid => grid_params}
       response.status.should == 422
       res = JSON::parse(response.body)
       res["error_code"].should == "TOO_MANY_SHIPS"
@@ -80,7 +81,7 @@ describe MapsController do
     it "should return ships are not of the required size" do
       grid_params = JSON.parse(valid_grid_params)
       grid_params[0] = [0, 0, 4, "down"]
-      post :create, {:team_id => @user.id, :grid => grid_params.to_json}
+      post :create, {:team_id => @user.id, :grid => grid_params}
       response.status.should == 422
       res = JSON::parse(response.body)
       res["error_code"].should == "WRONG_SHIP_SIZE"
@@ -90,7 +91,7 @@ describe MapsController do
       grid_params = JSON.parse(valid_grid_params)
       battleship = Ship.new(grid_params[1])
       grid_params[0] = [battleship.xpos, battleship.ypos, 5, battleship.direction]
-      post :create, {:team_id => @user.id, :grid => grid_params.to_json}
+      post :create, {:team_id => @user.id, :grid => grid_params}
       response.status.should == 422
       res = JSON::parse(response.body)
       res["error_code"].should == "SHIPS_OVERLAP"
@@ -99,7 +100,7 @@ describe MapsController do
     it "should return ship is positioned outside of map" do
       grid_params = JSON.parse(valid_grid_params)
       grid_params[0] = [9, 0, 5, 'across']
-      post :create, {:team_id => @user.id, :grid => grid_params.to_json}
+      post :create, {:team_id => @user.id, :grid => grid_params}
       response.status.should == 422
       res = JSON::parse(response.body)
       res["error_code"].should == "SHIP_OUT_OF_BOUNDS"
