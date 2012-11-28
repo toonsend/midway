@@ -8,17 +8,17 @@ class MapPresenter
 
   def to_console
     puts "GAME GRID"
-    puts "____________________"
+    puts "  0123456789"
+    puts "------------"
     game_grid = @map.game_grid
     10.times do |y|
+      print "#{y}|"
       10.times do |x|
-        print game_grid[x][y] + '|'
+        print game_grid[x][y]
       end
       puts ""
-      print "____________________"
-      puts ""
     end
-    nil
+    puts "------------"
   end
 
 end
