@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Map do
 
   def valid_grid
-    JSON.parse('[[0,0,5,"across"], [2, 2, 4, "across"], [3, 6, 3, "down"], [7, 8, 3, "across"], [4, 6, 2, "across"]]')
+    JSON.parse(valid_grid_params)
   end
 
   it "is valid from factory" do

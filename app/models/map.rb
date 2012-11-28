@@ -1,49 +1,35 @@
+require 'validators/map_validator'
+
 class Map < ActiveRecord::Base
 
   attr_accessible :grid, :team_id
   validates_presence_of :grid, :team_id
+  validates_with MapValidator
 
   serialize :grid, JSON
 
-  validate :validate_fleet_size
-  validate :validate_ship_sizes
-  validate :validate_ship_positions
+  def game_grid
+    @game_grid ||= fill_game_grid
+  end
 
-  VALID_FLEET = [5,4,3,3,2].sort
-
-  def validate_fleet_size
-    if self.grid && self.grid.length < 5
-      errors.add(:grid, "NOT_ENOUGH_SHIPS")
-    elsif self.grid && self.grid.length > 5
-      errors.add(:grid, "TOO_MANY_SHIPS")
+  def ships
+    return [] if self.grid.nil?
+    self.grid.map do |ship|
+      Ship.new(ship)
     end
   end
 
-  def validate_ship_sizes
-    if self.ships.map(&:length).sort != VALID_FLEET
-      errors.add(:grid, "WRONG_SHIP_SIZE")
-    end
+  def grid_error
+    errors[:grid][0]
   end
 
-  def validate_ship_positions
-    game_grid = empty_game_grid
-    self.ships.each do |ship|
-      ship.coordinates.each do |x,y|
-        raise(ShipOverlapException.new) if (game_grid[x][y] == 'x')
-        game_grid[x][y] = 'x'
-      end
-    end
-    game_grid
-  rescue ShipOutOfBoundsException
-    errors.add(:grid, "SHIP_OUT_OF_BOUNDS")
-  rescue ShipOverlapException
-    errors.add(:grid, "SHIPS_OVERLAP")
-  end
+  private
 
   def fill_game_grid
     game_grid = empty_game_grid
     self.ships.each do |ship|
       ship.coordinates.each do |x,y|
+        raise(MapValidator::ShipOverlapException.new) if (game_grid[x][y] == 'x')
         game_grid[x][y] = 'x'
       end
     end
@@ -59,33 +45,6 @@ class Map < ActiveRecord::Base
       end
     end
     game_grid
-  end
-
-  def ships
-    return [] if self.grid.nil?
-    self.grid.map do |ship|
-      Ship.new(ship)
-    end
-  end
-
-  def print_game_grid
-    puts "GAME GRID"
-    puts "____________________"
-    game_grid = fill_game_grid
-    10.times do |x|
-      10.times do |y|
-        print game_grid[x][y] + '|'
-      end
-      puts ""
-      print "____________________"
-      puts ""
-    end
-  end
-
-  class ShipOverlapException < Exception
-  end
-
-  class ShipOutOfBoundsException < Exception
   end
 
 end

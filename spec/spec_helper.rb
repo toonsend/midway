@@ -40,3 +40,8 @@ RSpec.configure do |config|
   #     --seed 1234
   config.order = "random"
 end
+
+def valid_grid_params
+  '[[0,0,5,"across"], [2, 2, 4, "across"], [3, 6, 3, "down"], [7, 8, 3, "across"], [4, 6, 2, "across"]]'
+end
+
