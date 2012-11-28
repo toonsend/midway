@@ -16,6 +16,7 @@ gem 'devise', "~> 2.1.2"
 
 group :development do
   gem 'capistrano', "~> 2.13.5"
+  gem 'rvm-capistrano'
   gem 'capistrano-ext', "~> 1.2.1"
   gem 'thin', '~> 1.5.0'
 end
