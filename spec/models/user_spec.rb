@@ -17,4 +17,10 @@ describe User do
     end.should_not change(User, :count)
   end
 
+  it "returns key when using #get_api_key" do
+    user = FactoryGirl.create(:user, :id => 4454)
+    user.get_api_key.should be_a(String)
+    user.get_api_key.should_not == true
+  end
+
 end
