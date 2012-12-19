@@ -2,9 +2,36 @@ require 'spec_helper'
 
 describe Game do
 
-  it "should have a map"
-  it "should have a user"
-  it "should record the moves in json"
+  describe "validation" do
+
+    it "should require a map" do
+      game = FactoryGirl.build(:game, :map_id => nil)
+      game.should_not be_valid
+      game.should have_at_least(1).error_on(:map_id)
+      game.errors[:map_id].should include("can't be blank")
+    end
+
+    it "should require a user" do
+      game = FactoryGirl.build(:game, :user_id => nil)
+      game.should_not be_valid
+      game.should have_at_least(1).error_on(:user_id)
+      game.errors[:user_id].should include("can't be blank")
+    end
+
+    it "should validate the moves are correct" do
+      game = FactoryGirl.build(:game, :moves => 1)
+      game.should_not be_valid
+      game.should have(1).error_on(:moves)
+      game.errors[:moves].should == ["INVALID_MOVE"]
+    end
+
+    it "should validate the user has uploaded some maps" do
+      game = FactoryGirl.build(:game)
+      game.should_not be_valid
+      game.should have(1).error_on(:user_id)
+      game.errors[:user_id].should == ["NO_MAPS_UPLOADED"]
+    end
+  end
 
   describe "test game" do
 
@@ -22,15 +49,33 @@ describe Game do
 
   end
 
-  describe "moves" do
+  describe "#play" do
+    before(:each) do
+      @map = FactoryGirl.create(:map, :team_id => 1)
+      @opponent_map = FactoryGirl.create(:map, :team_id => 2)
+      @game = FactoryGirl.create(:game)
+    end
 
-    it "should return a hit if the move hits a boat"
+    it "should return a hit if the move hits a boat" do
+      success, result = @game.play([0,0])
+      success.should be_true
+      result['status'].should == 'hit'
+    end
+
     it "should return a hit_and_destroyed if the move hits a boat and destroys it"
-    it "should return a miss if the move fails to hit a boat"
-    it "should return a miss if the move falls outside the board"
+
+    it "should return a miss if the move fails to hit a boat" do
+      success, result = @game.play([0,1])
+      success.should be_true
+      result['status'].should == 'miss'
+    end
+
+    it "should return a miss if the move falls outside the board" do
+      success, result = @game.play([0,11])
+      success.should be_true
+      result['status'].should == 'miss'
+    end
   end
-
-
 
   describe "game ending" do
 
