@@ -19,11 +19,17 @@ describe MapsController do
     end
 
     it "can get maps with valid api key" do
-      #TODO implement this when maps api will be ready
       get :index, :team_id => @user.id
       response.should be_success
       res = JSON::parse(response.body)
-      res["error_code"].should == "BADLY_FORMED_REQUEST"
+      res["grids"].should == {}
+
+      3.times { FactoryGirl.create(:map) }
+      get :index, :team_id => @user.id
+      response.should be_success
+      res = JSON::parse(response.body)
+      maps = Map.find_all_by_team_id(@user.id)
+      res["grids"].should == maps.inject({}) { |mem, map| mem["#{map.id}"]=map.grid;mem }
     end
 
   end

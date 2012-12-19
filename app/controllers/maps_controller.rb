@@ -4,8 +4,8 @@ class MapsController < ApplicationController
   before_filter :load_api
 
   def index
-    # TODO: implement me
-    render :json => {"error_code" => "BADLY_FORMED_REQUEST"}
+    maps = Map.find_all_by_team_id(params[:team_id])
+    render :json => { "grids" => maps.inject({}) { |mem, map| mem[map.id]=map.grid;mem }}, :status => 200
   end
 
   def create
