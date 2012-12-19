@@ -25,6 +25,8 @@ curl -H "HTTP_MIDWAY_API_KEY: <%= @api_key %>" http://localhost:3000/teams/<%= @
 ***
 ##GET /teams/:team_id/maps
 
+Gets a list of your teams maps
+
 ###Request paramaters:
 
 _none_
@@ -49,6 +51,38 @@ The list of your maps.
              2 => [[2, 1, 5, "across"], [0, 3, 4, "down"], [2, 6, 3, "across"], [6, 4, 3, "across"], [3, 4, 2, "down"]]}
 }
 ```
+
+***
+##DELETE /teams/:team_id/maps/:id
+
+Deletes the given map
+
+###Request paramaters:
+
+_none_
+
+###Example Request
+
+```
+curl -H "Midway-API-Key: <%= @api_key %>" -H "Content-Type: application/json" -X DELETE  http://localhost:3000/teams/1/maps/1
+```
+
+###Example Response
+
+* **id** Unique identifier for the map, used to update or delete it
+
+{"id":1}
+
+###Errors
+
+```
+{
+  "error_code": "MAP_NOT_FOUND",
+  "message": {"error_code":"MAP_NOT_FOUND","message":"Map 1 not found."}
+}
+```
+
+* MAP_NOT_FOUND, Map with that team id and or id does not exist
 
 ***
 ##POST /teams/:team_id/maps
