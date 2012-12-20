@@ -9,6 +9,9 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me
   # attr_accessible :title, :body
 
+	belongs_to :team
+	has_many :invites, :foreign_key => "invitee"
+
   def generate_api_key!
     self.api_key = ApiKey.generate(self)
     self.save

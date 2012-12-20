@@ -14,6 +14,7 @@ gem 'jquery-rails'
 gem 'twitter-bootstrap-rails', "= 2.1.3"
 gem 'devise', "~> 2.1.2"
 gem 'redcarpet', '1.17.2'
+gem "state_machine", "~> 1.1.2"
 
 group :development do
   gem 'capistrano', "~> 2.13.5"

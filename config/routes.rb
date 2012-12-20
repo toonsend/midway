@@ -30,6 +30,7 @@ Midway::Application.routes.draw do
   resources :teams do
     resources :game
     resources :maps
+    resources :invites
   end
 
   root :to => "dashboard#index"
