@@ -1,6 +1,9 @@
 require 'validators/game_validator'
 
 class Game < ActiveRecord::Base
+  belongs_to :team
+  belongs_to :map
+
   attr_accessible :map_id, :moves, :state, :user_id
   serialize :moves, Array
 

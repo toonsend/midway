@@ -1,6 +1,8 @@
 require 'validators/map_validator'
 
 class Map < ActiveRecord::Base
+  belongs_to :team
+  has_one :game
 
   attr_accessible :grid, :team_id
   validates_presence_of :grid, :team_id
