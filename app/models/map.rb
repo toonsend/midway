@@ -26,6 +26,13 @@ class Map < ActiveRecord::Base
     errors[:grid][0]
   end
 
+  def to_s
+    str = game_grid.map do |row|
+      row.map { |position| position == 'x' ? "\e[31m#{position}\e[0m" : position }.join(" | ")
+    end
+    puts str.join("\n")
+  end
+
   private
 
   def fill_game_grid
