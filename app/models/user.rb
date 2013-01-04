@@ -15,6 +15,7 @@ class User < ActiveRecord::Base
   def generate_api_key!
     self.api_key = ApiKey.generate(self)
     self.save
+    self.api_key
   end
 
   def get_api_key

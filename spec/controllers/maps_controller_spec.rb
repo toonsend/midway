@@ -9,6 +9,53 @@ describe MapsController do
     { :post => "/teams/13/maps" }.should route_to("controller" => "maps", "action" => "create", "team_id" => "13")
   end
 
+  describe "maps#destroy valid key" do
+
+    before(:each) do
+      @user = FactoryGirl.create(:user)
+      @user.generate_api_key!
+      request.env['HTTP_MIDWAY_API_KEY'] = @user.api_key
+      @map  = FactoryGirl.create(:map, :team_id => @user.id)
+    end
+
+
+    it "should return an success" do
+      response = delete :destroy, :team_id => @user.id, :id => @map.id
+      response.should be_success
+    end
+
+    it "should delete a map" do
+      lambda {
+        delete :destroy, :team_id => @user.id, :id => @map.id
+      }.should change(Map, :count).by(-1)
+    end
+
+    it "should only delete that team's map" do
+      Map.first.update_attribute(:team_id, 33)
+      lambda {
+        delete :destroy, :team_id => @user.id, :id => @map.id
+      }.should_not change(Map, :count)
+    end
+
+    it "should only delete the map with that id" do
+      lambda {
+        delete :destroy, :team_id => @user.id, :id => @map.id + 100
+      }.should_not change(Map, :count)
+    end
+
+    it "should return a 404 if the map is not found" do
+        response = delete :destroy, :team_id => @user.id, :id => @map.id + 100
+        response.status.should == 404
+    end
+
+    it "should return correct error code" do
+      response = delete :destroy, :team_id => @user.id, :id => @map.id + 100
+      response = JSON::parse(response.body)
+      response["error_code"].should == "MAP_NOT_FOUND"
+    end
+
+
+  end
 
   describe "maps#index with valid key" do
 
@@ -19,11 +66,17 @@ describe MapsController do
     end
 
     it "can get maps with valid api key" do
-      #TODO implement this when maps api will be ready
       get :index, :team_id => @user.id
       response.should be_success
       res = JSON::parse(response.body)
-      res["error_code"].should == "BADLY_FORMED_REQUEST"
+      res["grids"].should == {}
+
+      3.times { FactoryGirl.create(:map) }
+      get :index, :team_id => @user.id
+      response.should be_success
+      res = JSON::parse(response.body)
+      maps = Map.find_all_by_team_id(@user.id)
+      res["grids"].should == maps.inject({}) { |mem, map| mem["#{map.id}"]=map.grid;mem }
     end
 
   end
