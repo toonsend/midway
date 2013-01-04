@@ -25,7 +25,7 @@ describe Map do
       map.errors[:grid].should include("can't be blank")
     end
 
-    it "should require a team_id" do
+    it "should require a team" do
       map = FactoryGirl.build(:map, :team_id => nil)
       map.should_not be_valid
       map.should have_at_least(1).error_on(:team_id)

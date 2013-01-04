@@ -4,8 +4,9 @@ class Map < ActiveRecord::Base
   belongs_to :team
   has_one :game
 
-  attr_accessible :grid, :team_id
-  validates_presence_of :grid, :team_id
+  attr_accessible :grid
+  validates :grid, :presence => true
+  validates :team_id, :presence => true
   validates_with MapValidator
 
   serialize :grid, JSON
