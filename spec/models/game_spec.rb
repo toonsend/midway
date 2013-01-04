@@ -11,11 +11,11 @@ describe Game do
       game.errors[:map_id].should include("can't be blank")
     end
 
-    it "should require a user" do
-      game = FactoryGirl.build(:game, :user_id => nil)
+    it "should require a team" do
+      game = FactoryGirl.build(:game, :team_id => nil)
       game.should_not be_valid
-      game.should have_at_least(1).error_on(:user_id)
-      game.errors[:user_id].should include("can't be blank")
+      game.should have_at_least(1).error_on(:team_id)
+      game.errors[:team_id].should include("can't be blank")
     end
 
     it "should validate the moves are correct" do
@@ -28,8 +28,8 @@ describe Game do
     it "should validate the user has uploaded some maps" do
       game = FactoryGirl.build(:game)
       game.should_not be_valid
-      game.should have(1).error_on(:user_id)
-      game.errors[:user_id].should == ["NO_MAPS_UPLOADED"]
+      game.should have(1).error_on(:team_id)
+      game.errors[:team_id].should == ["NO_MAPS_UPLOADED"]
     end
   end
 
@@ -51,9 +51,11 @@ describe Game do
 
   describe "#play" do
     before(:each) do
-      @map = FactoryGirl.create(:map, :team_id => 1)
-      @opponent_map = FactoryGirl.create(:map, :team_id => 2)
-      @game = FactoryGirl.create(:game)
+      @team = FactoryGirl.create(:team)
+      @opponent = FactoryGirl.create(:team)
+      @map = FactoryGirl.create(:map, :team => @team)
+      @opponent_map = FactoryGirl.create(:map, :team => @opponent)
+      @game = FactoryGirl.create(:game, :team => @team)
     end
 
     it "should return a hit if the move hits a boat" do

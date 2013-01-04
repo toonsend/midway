@@ -1,7 +1,7 @@
 class GameValidator < ActiveModel::Validator
   def validate(record)
     validate_moves(record)
-    validate_existence_of_user_maps(record)
+    validate_existence_of_team_maps(record) if record.team
   end
 
   def validate_moves(record)
@@ -25,8 +25,7 @@ class GameValidator < ActiveModel::Validator
     end
   end
 
-  def validate_existence_of_user_maps(record)
-    maps = Map.find_all_by_team_id(record.user_id)
-    record.errors.add(:user_id, "NO_MAPS_UPLOADED") if maps.empty?
+  def validate_existence_of_team_maps(record)
+    record.errors.add(:team_id, "NO_MAPS_UPLOADED") if record.team.maps.empty?
   end
 end

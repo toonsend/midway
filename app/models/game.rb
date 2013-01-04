@@ -4,10 +4,11 @@ class Game < ActiveRecord::Base
   belongs_to :team
   belongs_to :map
 
-  attr_accessible :map_id, :moves, :state, :user_id
+  attr_accessible :moves, :state
   serialize :moves, Array
 
-  validates_presence_of :user_id, :map_id
+  validates :team_id, :presence => true
+  validates :map_id,  :presence => true
   validates_with GameValidator
 
   before_validation :set_game_defaults, :on => :create
@@ -23,16 +24,13 @@ class Game < ActiveRecord::Base
     end
   end
 
-  def map
-    @map ||= Map.find_by_id(self.map_id)
-  end
-
   private
 
   def set_game_defaults
-    map_ids = Map.where(["team_id != ?", self.user_id]).map(&:id)
+    return if !team
+    maps = Map.all - team.maps
     #TODO define how we want to select the map
-    self.map_id = map_ids.at(rand(map_ids.size-1))
+    self.map = maps[rand(maps.length)]
     self.state = "playing"
   end
 
