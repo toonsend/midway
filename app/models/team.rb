@@ -2,6 +2,7 @@ class Team < ActiveRecord::Base
   has_many :users
   has_many :maps
   has_many :invites, :foreign_key => "inviter"
+  has_one  :game
 
   attr_accessible :name
 
