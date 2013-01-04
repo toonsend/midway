@@ -1,4 +1,13 @@
 <div class="well">
+  <h4>
+    Hello this is your api key! Keep it a secret :) So nobody will destroy your score.
+  </h4>
+
+  <div class="input-prepend">
+    <span class="add-on">HTTP_MIDWAY_API_KEY</span>
+    <input class="span4" id="apiKeyInput" type="text" value="<%= @api_key %>">
+  </div>
+
   <% if @team.new_record? %>
     <h4>
       Hello, create a team so you can start a game.
@@ -9,14 +18,6 @@
       <%= f.submit "Create team", {:class => "btn btn-primary"} %>
     <% end %>
   <% else %>
-    <h4>
-      Hello this is your teams key! Keep it a secret :) So nobody will destroy your score.
-    </h4>
-
-    <div class="input-prepend">
-      <span class="add-on">HTTP_MIDWAY_API_KEY</span>
-      <input class="span4" id="apiKeyInput" type="text" value="<%= @team.get_api_key %>">
-    </div>
     <div class="input-prepend">
       <span class="add-on">TEAM NAME</span>
       <input class="span4" id="teamNameInput" type="text" value="<%= @team.name %>">

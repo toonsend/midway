@@ -19,6 +19,7 @@ class Team < ActiveRecord::Base
 
   def users_to_invite(team_owner)
     invited_users = invites.map(&:invitee)
-    User.where(["users.id != ?", team_owner.id]).reject! {|u| invited_users.include?(u.id) }
+    users = User.where(["users.id != ?", team_owner.id]).reject! {|u| invited_users.include?(u.id) }
+    users || []
   end
 end
