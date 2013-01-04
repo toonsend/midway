@@ -14,11 +14,18 @@ class Game < ActiveRecord::Base
   before_validation :set_game_defaults, :on => :create
 
   def play(move)
-    self.moves << move
+    x,y = move
+    begin
+      self.moves << [Integer(x), Integer(y)]
+    rescue
+      return [false, {:error_code => "INVALID_MOVE"}]
+    end
+
     if self.save
       last_shot, shot_grid = run_moves
       [true, move_state(last_shot, shot_grid)]
     else
+      puts errors.inspect
       #TODO error handling
       [false, {:error_code => self.errors.first[1]}]
     end
@@ -53,7 +60,7 @@ class Game < ActiveRecord::Base
     {
       "game_id"     => self.id,
       "grid"        => shot_grid,
-      "opponent_id" => self.map.team_id,
+      "opponent_id" => self.map.team.id,
       "status"      => shot,
       "move"        => moves.last,
       "game_status" => self.state,

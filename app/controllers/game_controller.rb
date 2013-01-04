@@ -4,7 +4,7 @@ class GameController < ApplicationController
   before_filter :load_api
 
   def create
-    game = Game.find_or_create_by_user_id(params[:team_id])
+    game = Game.find_or_create_by_team_id(@team.id)
 
     if game.valid?
       success, result = game.play(params[:move])
@@ -22,7 +22,7 @@ class GameController < ApplicationController
   def error_response(errors)
     if errors.include?(:map_id)
       { "error_code" => "NO_GAME", "message" => error_message('NO_GAME') }
-    elsif errors.include?(:user_id)
+    elsif errors.include?(:team_id)
       { "error_code" => "NO_MAPS_UPLOADED", "message" => error_message('NO_MAPS_UPLOADED') }
     else
       { "error_code" => "BADLY_FORMED_REQUEST", "message" => error_message('BADLY_FORMED_REQUEST') }
