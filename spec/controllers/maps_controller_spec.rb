@@ -162,15 +162,6 @@ describe MapsController do
       res["error_code"].should == "SHIPS_OVERLAP"
     end
 
-    def check_for_invalid_ship(ship)
-      grid_params = JSON.parse(valid_grid_params)
-      grid_params[0] = ship
-      post :create, {:team_id => @user.id, :grid => grid_params}
-      response.status.should == 422
-      res = JSON::parse(response.body)
-      res["error_code"].should == "SHIP_OUT_OF_BOUNDS"
-    end
-
     it "should return ship is positioned outside of map" do
       check_for_invalid_ship([9, 0, 5, 'across'])
     end
@@ -187,13 +178,20 @@ describe MapsController do
       check_for_invalid_ship([-1, 0, 5, 'down'])
     end
 
-
-
     it "should return badly formed request" do
       post :create, {:team_id => @team.id, :grid => "mooose"}
       response.status.should == 422
       res = JSON::parse(response.body)
       res["error_code"].should == "BADLY_FORMED_REQUEST"
+    end
+
+    def check_for_invalid_ship(ship)
+      grid_params = JSON.parse(valid_grid_params)
+      grid_params[0] = ship
+      post :create, {:team_id => @user.id, :grid => grid_params}
+      response.status.should == 422
+      res = JSON::parse(response.body)
+      res["error_code"].should == "SHIP_OUT_OF_BOUNDS"
     end
 
   end
