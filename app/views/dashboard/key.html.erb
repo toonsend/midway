@@ -1,16 +1,68 @@
 <div class="well">
+  <h4>
+    Hello this is your api key! Keep it a secret :) So nobody will destroy your score.
+  </h4>
 
-<h4>
-  Hello this is your teams key! Keep it a secret :) So nobody will destroy your score.
-</h4>
+  <div class="input-prepend">
+    <span class="add-on">HTTP_MIDWAY_API_KEY</span>
+    <input class="span4" id="apiKeyInput" type="text" value="<%= @api_key %>">
+  </div>
 
-<div class="input-prepend">
-  <span class="add-on">HTTP_MIDWAY_API_KEY</span>
-  <input class="span4" id="apiKeyInput" type="text" value="<%= @key %>">
-</div>
-<div class="input-prepend">
-  <span class="add-on">TEAM ID</span>
-  <input class="span4" id="userIdInput" type="text" value="<%= @user_id %>">
-</div>
+  <% if @team.new_record? %>
+    <h4>
+      Hello, create a team so you can start a game.
+    </h4>
+
+    <%= form_for @team do |f| %>
+      <%= f.text_field :name, {:placeholder => "Team name"} %>
+      <%= f.submit "Create team", {:class => "btn btn-primary"} %>
+    <% end %>
+  <% else %>
+    <div class="input-prepend">
+      <span class="add-on">TEAM NAME</span>
+      <input class="span4" id="teamNameInput" type="text" value="<%= @team.name %>">
+    </div>
+    <div class="input-prepend">
+      <span class="add-on">TEAM ID</span>
+      <input class="span4" id="teamIdInput" type="text" value="<%= @team.id %>">
+    </div>
+
+    <br>
+    <h4>
+      Invite people to the coolest team!
+    </h4>
+
+    <%= form_for [@team,@invite] do |f| %>
+      <%= f.select :invitee, options_for_select(@users.map {|user| [user.email, user.id] }) %>
+      <%= f.hidden_field :inviter, :value => @team.id %>
+      <%= f.submit "Invite", {:class => "btn btn-primary"} %>
+    <% end %>
+  <% end %>
+
+    <div class="row-fluid marketing">
+      <div class="span6">
+        <h4>Team members:</h4>
+
+        <ol>
+        <% @team.users.each do |user| %>
+          <li><%= user.email %></li>
+        <% end %>
+        </ol>
+
+      </div>
+
+      <div class="span6">
+        <h4>Invites:</h4>
+
+        <ol>
+        <% @team.invites.each do |invite| %>
+          <% if !invite.new_record? %>
+            <li><%= invite.user.email %>:<%= invite.state %></li>
+          <% end %>
+        <% end %>
+        </ol>
+
+      </div>
+    </div>
 
 </div>

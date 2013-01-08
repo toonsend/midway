@@ -1,9 +1,12 @@
 require 'validators/map_validator'
 
 class Map < ActiveRecord::Base
+  belongs_to :team
+  has_one :game
 
   attr_accessible :grid, :team_id
-  validates_presence_of :grid, :team_id
+  validates :grid, :presence => true
+  validates :team_id, :presence => true
   validates_with MapValidator
 
   serialize :grid, JSON
@@ -24,6 +27,13 @@ class Map < ActiveRecord::Base
 
   def grid_error
     errors[:grid][0]
+  end
+
+  def to_s
+    str = game_grid.map do |row|
+      row.map { |position| position == 'x' ? "\e[31m#{position}\e[0m" : position }.join(" | ")
+    end
+    puts str.join("\n")
   end
 
   private
