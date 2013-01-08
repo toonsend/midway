@@ -8,6 +8,9 @@ class Map < ActiveRecord::Base
 
   serialize :grid, JSON
 
+  GRID_WIDTH = 10
+  GRID_HEIGHT = 10
+
   def game_grid
     @game_grid ||= fill_game_grid
   end
@@ -28,7 +31,7 @@ class Map < ActiveRecord::Base
   def fill_game_grid
     game_grid = empty_game_grid
     self.ships.each do |ship|
-      ship.coordinates.each do |x,y|
+      ship.coordinates(GRID_WIDTH, GRID_HEIGHT).each do |x,y|
         raise(MapValidator::ShipOverlapException.new) if (game_grid[x][y] == 'x')
         game_grid[x][y] = 'x'
       end
@@ -38,9 +41,9 @@ class Map < ActiveRecord::Base
 
   def empty_game_grid
     game_grid = []
-    10.times do |x|
+    GRID_WIDTH.times do |x|
       game_grid[x] = []
-      10.times do |y|
+      GRID_HEIGHT.times do |y|
         game_grid[x][y] = 'o'
       end
     end
