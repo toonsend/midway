@@ -9,7 +9,9 @@ set :repository, "git@github.com:mitadmin/#{application}.git"
 set :rails_env, "production"
 set :server_type, :passenger
 
-set :servers, 'ec2-176-34-198-139.eu-west-1.compute.amazonaws.com'
+# Amazon Server
+# ec2-176-34-198-139.eu-west-1.compute.amazonaws.com
+set :servers, '176.34.198.139'
 
 role :web, servers
 role :app, servers
