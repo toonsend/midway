@@ -24,6 +24,7 @@ group :development do
 end
 
 group :development, :test do
+  gem 'debugger'
   gem 'rspec-rails', "~> 2.11.4"
   gem 'ZenTest', '~> 4.8.1'
   gem 'autotest-growl', '~> 0.2.16'
