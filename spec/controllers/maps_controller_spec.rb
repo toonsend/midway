@@ -12,7 +12,7 @@ describe MapsController do
   describe "maps#destroy valid key" do
 
     before(:each) do
-      @user = FactoryGirl.create(:user)
+      @user = FactoryGirl.create(:user, :with_team)
       @user.generate_api_key!
       @team = @user.team
       request.env['HTTP_MIDWAY_API_KEY'] = @user.api_key
@@ -60,7 +60,7 @@ describe MapsController do
   describe "maps#index with valid key" do
 
     before(:each) do
-      @user = FactoryGirl.create(:user)
+      @user = FactoryGirl.create(:user, :with_team)
       @user.generate_api_key!
       @team = @user.team
       request.env['HTTP_MIDWAY_API_KEY'] = @user.api_key
@@ -104,7 +104,7 @@ describe MapsController do
     end
 
     it "can upload map with valid api key" do
-      user = FactoryGirl.create(:user)
+      user = FactoryGirl.create(:user, :with_team)
       user.generate_api_key!
       request.env['HTTP_MIDWAY_API_KEY'] = user.api_key
       grid_params = JSON.parse(valid_grid_params)
@@ -119,7 +119,7 @@ describe MapsController do
   describe "when map is invalid" do
 
     before(:each) do
-      @user = FactoryGirl.create(:user)
+      @user = FactoryGirl.create(:user, :with_team)
       @user.generate_api_key!
       @team = @user.team
       request.env['HTTP_MIDWAY_API_KEY'] = @user.api_key

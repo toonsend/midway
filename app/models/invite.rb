@@ -4,6 +4,8 @@ class Invite < ActiveRecord::Base
   belongs_to :team, :foreign_key => "inviter"
   belongs_to :user, :foreign_key => "invitee"
 
+  validates :inviter, :presence => true
+  validates :invitee, :presence => true
   validates :invitee, :uniqueness => {:scope => :inviter}
 
   state_machine :state, :initial => :pending do
@@ -17,5 +19,11 @@ class Invite < ActiveRecord::Base
     event :decline do
       transition :pending => :declined
     end
+  end
+
+  private
+
+  def add_user_to_team
+    team.users << user
   end
 end
