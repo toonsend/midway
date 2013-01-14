@@ -3,8 +3,9 @@ require 'validators/game_validator'
 class Game < ActiveRecord::Base
   belongs_to :team
   belongs_to :map
+  belongs_to :tournament
 
-  attr_accessible :moves, :state
+  attr_accessible :moves, :state, :map, :team, :tournament
   serialize :moves, Array
 
   validates :team_id, :presence => true
@@ -12,6 +13,22 @@ class Game < ActiveRecord::Base
   validates_with GameValidator
 
   before_validation :set_game_defaults, :on => :create
+
+  state_machine :state, :initial => :pending do
+
+    state :pending, :in_progress
+    state :in_progress, :completed
+    state :completed
+
+    event :start do
+      transition :pending => :in_progress
+    end
+
+    event :end do
+      transition :in_progress => :completed
+    end
+
+  end
 
   def play(move)
     x,y = move
@@ -38,7 +55,6 @@ class Game < ActiveRecord::Base
     maps = Map.all - team.maps
     #TODO define how we want to select the map
     self.map = maps[rand(maps.length)]
-    self.state = "playing"
   end
 
   def run_moves
