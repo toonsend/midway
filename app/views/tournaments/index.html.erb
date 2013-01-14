@@ -1,0 +1,53 @@
+<div class="row-fluid marketing">
+  <div class="span12">
+    <h4>Tournaments:</h4>
+    <table class='table'>
+      <tr>
+        <th>Name</th>
+        <th>State</th>
+        <th>Rounds</th>
+        <th>Start Date</th>
+      </tr>
+      <% @tournaments.each do |tournament| %>
+        <tr>
+          <td><%= tournament.name %></td>
+          <td><%= tournament.state %></td>
+          <td><%= tournament.max_rounds %></td>
+          <td><%= tournament.start_at %></td>
+        </tr>
+      <% end %>
+      <% if @tournaments.empty? %>
+        <tr>
+          <td colspan='3'>No Tournaments</td>
+        </tr>
+      <% end %>
+    </table>
+    <hr />
+    <h4>Create Tournament:</h4>
+    <% if flash[:error] %>
+      <div class="alert alert-error">
+        <% flash[:error].each do |msg| %>
+          <%= msg %>
+          <br/>
+        <% end %>
+      </div>
+    <%end %>
+    <%= form_for [Tournament.new] do |f| %>
+
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+      <%= f.label :max_rounds, "number of rounds" %>
+      <%= f.select :max_rounds, [1,2,3,4,5,6,7,8,9,10] %>
+      <%= f.label :start_at%>
+      <%= f.text_field :start_at, 'data-behaviour' => 'datepicker' %>
+      <br />
+      <%= f.submit "Create Tournament", {:class => "btn btn-primary"} %>
+    <% end %>
+  </div>
+</div>
+
+<script type='text/javascript'>
+  $(document).on("focus", "[data-behaviour~='datepicker']", function(e){
+    $(this).datepicker({"format": "yyyy-mm-dd", "weekStart": 1, "autoclose": true});
+  });
+</script>
