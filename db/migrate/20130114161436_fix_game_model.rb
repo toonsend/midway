@@ -4,7 +4,7 @@ class FixGameModel < ActiveRecord::Migration
       add_column(:games, :team_id, :integer)
     end
     if column_exists? :games, :user_id
-      remove_column(:games, :user_id, :integer)
+      remove_column(:games, :user_id)
     end
   end
 end
