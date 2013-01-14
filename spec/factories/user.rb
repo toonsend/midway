@@ -5,7 +5,10 @@ FactoryGirl.define do
     email
     password "password"
     password_confirmation "password"
-    team
+
+    trait :with_team do
+      team
+    end
   end
 
 end
