@@ -18,8 +18,10 @@ class Tournament < ActiveRecord::Base
     state :in_progress, :complete
     state :complete
 
+    after_transition :on => :start, :do => :create_games
+
     event :start do
-      transition :open => :in_progress
+      transition :open => :in_progress, :if => lambda {|tourney| tourney.teams.size > 1 }
     end
 
     event :end do
@@ -28,14 +30,62 @@ class Tournament < ActiveRecord::Base
 
   end
 
+  def self.get_game(team)
+    tournament = TournamentTeam.in_progress_tournament(team)
+    raise NoTournamentException.new if tournament.nil?
+    game = tournament.games.where(:team_id => team.id, :state => 'in_progress').first
+    unless game
+      game = tournament.games.where(:team_id => team.id, :state => 'pending').first
+      game.start! if game
+    end
+    game
+  end
+
   def enter_tournament(team)
-    unless TournamentTeam.active_tournament(team.id).empty?
-      raise TournamentAlreadyEnteredException.new
+    unless TournamentTeam.active_tournament(team).nil?
+      raise ExistingTournamentEnteredException.new
+    end
+    if team.maps.size == 0
+      raise NoMapsUploadedException.new
+    end
+    if in_progress? || complete?
+      raise TournamentEntryClosedException.new
     end
     self.teams << team
   end
 
+
+  private
+
+  def competitors_of(team)
+    self.teams.where(["teams.id != ?", team.id])
+  end
+
+  def create_games
+    generate_round_of_games
+  end
+
+  def generate_round_of_games(round = self.max_rounds)
+    self.teams.each do |team|
+      create_games_against(team, round)
+    end
+    generate_round_of_games(round - 1) if round > 1
+  end
+
+  def create_games_against(team, round)
+    competitors_of(team).each do |competitor|
+      Game.create!({
+        :team       => team,
+        :map        => competitor.map_for_round(round),
+        :tournament => self
+      })
+    end
+  end
+
 end
 
-class TournamentAlreadyEnteredException < Exception;end
+class NoTournamentException < Exception;end
+class ExistingTournamentEnteredException < Exception;end
+class TournamentEntryClosedException < Exception;end
+class NoMapsUploadedException < Exception;end
 
