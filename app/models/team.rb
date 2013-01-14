@@ -1,10 +1,11 @@
 class Team < ActiveRecord::Base
-  has_many :users
-  has_many :maps
-  has_many :invites, :foreign_key => "inviter"
-  has_one  :game
 
   attr_accessible :name
+
+  has_many   :users
+  has_many   :maps
+  has_many   :invites, :foreign_key => "inviter"
+  has_one    :game
 
   validates :name, :presence => true
 
@@ -15,6 +16,10 @@ class Team < ActiveRecord::Base
 
   def get_api_key
     self.api_key ||= self.generate_api_key!
+  end
+
+  def map_for_round(round)
+    maps[round % self.maps.size]
   end
 
   def users_to_invite(team_owner)
