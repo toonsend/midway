@@ -22,9 +22,8 @@ class Team < ActiveRecord::Base
     maps[round % self.maps.size]
   end
 
-  def users_to_invite(team_owner)
+  def users_to_invite(inviter)
     invited_users = invites.map(&:invitee)
-    users = User.where(["users.id != ?", team_owner.id]).reject! {|u| invited_users.include?(u.id) }
-    users || []
+    User.where(["id != ? and team_id is null", inviter.id]).reject {|u| invited_users.include?(u.id) }
   end
 end
