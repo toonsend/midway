@@ -1,8 +1,9 @@
 FactoryGirl.define do
 
   factory :tournament do
-    name "tourney 1"
+    sequence(:name) {|n| "tournament_#{n}" }
     start_at DateTime.now
     max_rounds 4
   end
+
 end
