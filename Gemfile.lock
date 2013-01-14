@@ -34,6 +34,8 @@ GEM
     autotest-growl (0.2.16)
     autotest-rails-pure (4.1.2)
     bcrypt-ruby (3.0.1)
+    bootstrap-datepicker-rails (0.6.36)
+      railties (>= 3.0)
     builder (3.0.4)
     capistrano (2.13.5)
       highline
@@ -199,6 +201,7 @@ DEPENDENCIES
   ZenTest (~> 4.8.1)
   autotest-growl (~> 0.2.16)
   autotest-rails-pure (~> 4.1.2)
+  bootstrap-datepicker-rails
   capistrano (~> 2.13.5)
   capistrano-ext (~> 1.2.1)
   ci_reporter
