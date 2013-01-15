@@ -1,0 +1,20 @@
+Sergio
+
+Move team to it's own tab
+Add invite accept or decline button and list of invites
+Leave team functionality
+
+Toons/Jakub/Ben
+
+Add annotate gem to project
+Start tournament button
+Enter tournament functionality
+Add tournament functionality to team controller
+Test games are played against correct map
+Detect game end
+Ship sunk detection added to game
+Add a total moves to game model
+Add 100 moves end game
+Add end tournament, ends unfinished games with a count of 100
+Moves Tournament League table
+Best Maps Tournament League table
