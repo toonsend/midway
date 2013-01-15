@@ -15,6 +15,7 @@ gem 'twitter-bootstrap-rails', "= 2.1.3"
 gem 'devise', "~> 2.1.2"
 gem 'redcarpet', '1.17.2'
 gem "state_machine", "~> 1.1.2"
+gem 'bootstrap-datepicker-rails'
 
 group :development do
   gem 'capistrano', "~> 2.13.5"
@@ -24,6 +25,7 @@ group :development do
 end
 
 group :development, :test do
+  gem 'debugger'
   gem 'rspec-rails', "~> 2.11.4"
   gem 'ZenTest', '~> 4.8.1'
   gem 'autotest-growl', '~> 0.2.16'

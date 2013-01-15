@@ -34,6 +34,8 @@ GEM
     autotest-growl (0.2.16)
     autotest-rails-pure (4.1.2)
     bcrypt-ruby (3.0.1)
+    bootstrap-datepicker-rails (0.6.36)
+      railties (>= 3.0)
     builder (3.0.4)
     capistrano (2.13.5)
       highline
@@ -52,9 +54,17 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.4.0)
+    columnize (0.3.6)
     commonjs (0.2.6)
     crack (0.3.1)
     daemons (1.1.9)
+    debugger (1.2.3)
+      columnize (>= 0.3.1)
+      debugger-linecache (~> 1.1.1)
+      debugger-ruby_core_source (~> 1.1.5)
+    debugger-linecache (1.1.2)
+      debugger-ruby_core_source (>= 1.1.1)
+    debugger-ruby_core_source (1.1.6)
     devise (2.1.2)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
@@ -191,10 +201,12 @@ DEPENDENCIES
   ZenTest (~> 4.8.1)
   autotest-growl (~> 0.2.16)
   autotest-rails-pure (~> 4.1.2)
+  bootstrap-datepicker-rails
   capistrano (~> 2.13.5)
   capistrano-ext (~> 1.2.1)
   ci_reporter
   coffee-rails (~> 3.2.1)
+  debugger
   devise (~> 2.1.2)
   factory_girl_rails (~> 4.1.0)
   jquery-rails

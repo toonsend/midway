@@ -17,9 +17,10 @@ ActiveRecord::Schema.define(:version => 20130114161436) do
     t.text     "moves"
     t.string   "state"
     t.integer  "map_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
     t.integer  "team_id"
+    t.integer  "tournament_id"
   end
 
   create_table "invites", :force => true do |t|
@@ -42,6 +43,23 @@ ActiveRecord::Schema.define(:version => 20130114161436) do
     t.string   "api_key"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "tournament_teams", :force => true do |t|
+    t.integer  "tournament_id"
+    t.integer  "team_id"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  create_table "tournaments", :force => true do |t|
+    t.string   "name"
+    t.string   "state"
+    t.integer  "current_round", :default => 0
+    t.integer  "max_rounds"
+    t.datetime "start_at"
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
   end
 
   create_table "users", :force => true do |t|

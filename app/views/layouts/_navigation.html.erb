@@ -6,9 +6,10 @@
         <%= current_user.email %>
       </p>
     </li>
-	  <%= nav_link 'Home', root_url %>
-		<%= nav_link "Key", key_path %>
-		<%= nav_link "Api", api_path %>
+    <%= nav_link 'Home', root_url %>
+    <%= nav_link 'Tournaments', tournaments_path %>
+    <%= nav_link "Key", key_path %>
+    <%= nav_link "Api", api_path %>
     <li>
       <%= link_to "Logout",  destroy_user_session_path, :method => :delete %>
     </li>
