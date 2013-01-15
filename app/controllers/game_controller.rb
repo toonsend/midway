@@ -4,18 +4,24 @@ class GameController < ApplicationController
   before_filter :load_api
 
   def create
-    game = Game.find_or_create_by_team_id(@team.id)
-
-    if game.valid?
-      success, result = game.play(params[:move])
-
-      if success
-        render :json => result, :status => 200
-      else
-        render :json => { "error_code" => result[:error_code], "message" => error_message(result[:error_code]) }, :status => 422
+    #TODO: move render outside of tx block
+    Game.transaction do
+      game = Game.where(:id => @team.id).lock(true).first
+      if game.nil?
+        game = Game.create({:team_id => @team.id}, :without_protection => true)
       end
-    else
-      render :json => error_response(game.errors), :status => 422
+
+      if game.valid?
+        success, result = game.play(params[:move])
+
+        if success
+          render :json => result, :status => 200
+        else
+          render :json => { "error_code" => result[:error_code], "message" => error_message(result[:error_code]) }, :status => 422
+        end
+      else
+        render :json => error_response(game.errors), :status => 422
+      end
     end
   end
 
