@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: tournament_teams
+#
+#  id            :integer          not null, primary key
+#  tournament_id :integer
+#  team_id       :integer
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#
+
 class TournamentTeam < ActiveRecord::Base
   attr_accessible :team_id, :tournament_id
 
