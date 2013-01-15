@@ -51,6 +51,14 @@ describe Invite do
         }.should raise_exception(StateMachine::InvalidTransition)
       end
 
+      it "should raise an exception if invitee already has a team" do
+        team = FactoryGirl.create(:team)
+        @invite.user.team = team
+        lambda {
+          @invite.accept!
+        }.should raise_exception(StateMachine::InvalidTransition)
+      end
+
       it "should set invite as accepted if it's currently pending" do
         @invite.accept!
         @invite.state.should == "accepted"
