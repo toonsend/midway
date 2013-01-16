@@ -1,6 +1,4 @@
 class Ship
-
-  
   attr_accessor :xpos, :ypos, :direction, :length
 
   def initialize(ship)
@@ -12,7 +10,7 @@ class Ship
 
   def coordinates(grid_width, grid_height)
     raise ShipOutOfBoundsException if self.xpos < 0 || self.ypos < 0 || self.xpos >= grid_width || self.ypos >= grid_height
-      
+
     position = [[self.xpos,  self.ypos]]
     (self.length - 1).times do |count|
       pos = count + 1
