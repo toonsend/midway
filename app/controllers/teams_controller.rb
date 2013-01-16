@@ -1,9 +1,16 @@
 class TeamsController < ApplicationController
 
   def create
-    current_user.create_team(params[:team])
-    current_user.save
-    redirect_to :controller => :dashboard, :action => 'key'
+    begin
+      team = current_user.create_team(params[:team])
+      team.users << current_user
+      team.save
+      current_user.save
+      flash[:notice] = "Team created! Yay!"
+    rescue
+      flash[:alert] = "Error while creating team"
+    end
+    redirect_to :controller => :dashboard, :action => 'key'          
   end
 
 end
