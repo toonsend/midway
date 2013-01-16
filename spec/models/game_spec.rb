@@ -25,37 +25,72 @@ describe Game do
       game.errors[:moves].should == ["INVALID_MOVE"]
     end
 
-    it "should validate the user has uploaded some maps" do
-      game = FactoryGirl.build(:game)
-      game.should_not be_valid
-      game.should have(1).error_on(:team_id)
-      game.errors[:team_id].should == ["NO_MAPS_UPLOADED"]
-    end
-  end
-
-  describe "test game" do
-
-    it "should return a new a test game if one doesn't exist"
-    it "should return the existing test game if one exists in progress"
-
   end
 
   describe "states" do
 
-    it "should begin in pending"
-    it "should progress from pending to in_progress"
-    it "should progress from in_progress to complete"
-    it "should render the current game map as a 10 element array"
+    it "should begin in pending" do
+      game = FactoryGirl.create(:game)
+      game.pending?.should be_true
+    end
+
+    it "should progress from pending to in_progress" do
+      game = FactoryGirl.create(:game)
+      game.start!
+      game.in_progress?.should be_true
+    end
+
+    it "should progress from in_progress to complete" do
+      game = FactoryGirl.create(:game)
+      game.start!
+      game.end!
+      game.completed?.should be_true
+    end
+
+    it "should mark the total moves when game is completed" do
+      game = FactoryGirl.create(:game)
+      game.start!
+      game.play([0,0])
+      game.play([3,5])
+      game.end!
+      game.total_moves.should == 2
+    end
+
+    it "should progress from in_progress to complete with forfeit" do
+      game = FactoryGirl.create(:game)
+      game.start!
+      game.forfeit!
+      game.completed?.should be_true
+    end
+
+    it "should progress from pending to complete with forfeit" do
+      game = FactoryGirl.create(:game)
+      game.forfeit!
+      game.completed?.should be_true
+    end
+
+    it "should mark total moves as 100 after forfeit" do
+      game = FactoryGirl.create(:game)
+      game.forfeit!
+      game.total_moves.should == 100
+    end
+
+    it "should show all in progress games" do
+      game1 = FactoryGirl.create(:game)
+      game2 = FactoryGirl.create(:game)
+      game2.update_attribute(:state, 'completed')
+      game3 = FactoryGirl.create(:game)
+      game3.update_attribute(:state, 'in_progress')
+      Game.non_complete.should == [game1, game3]
+    end
+
 
   end
 
   describe "#play" do
+
     before(:each) do
-      @team = FactoryGirl.create(:team)
-      @opponent = FactoryGirl.create(:team)
-      @map = FactoryGirl.create(:map, :team => @team)
-      @opponent_map = FactoryGirl.create(:map, :team => @opponent)
-      @game = FactoryGirl.create(:game, :team => @team)
+      @game = FactoryGirl.create(:game)
     end
 
     it "should return a hit if the move hits a boat" do
@@ -77,13 +112,25 @@ describe Game do
       success.should be_true
       result['status'].should == 'miss'
     end
+
   end
 
   describe "game ending" do
 
-    it "should end the game if there have been 100 moves"
+    before(:each) do
+      @game = FactoryGirl.create(:game)
+    end
+
     it "should end the game if all the ships have been sunk"
-    it "should end the game and increase the moves to 100 after failed_to_complete action"
+
+    it "should change the state to complete if moves reach 100" do
+      @game.start!
+      99.times do
+        @game.moves << [0,0]
+      end
+      @game.play([0,0])
+      @game.completed?.should be_true
+    end
 
   end
 

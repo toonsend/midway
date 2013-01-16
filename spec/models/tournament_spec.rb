@@ -146,22 +146,18 @@ describe Tournament do
     Tournament.get_game(team).should be_an_instance_of(Game)
   end
 
-  it "should raise tournament over if there are no more games to play"
-  it "should calculate a league table"
-
-  def valid_tournament
-    tournament = FactoryGirl.create(:tournament)
-    tournament.teams << valid_team
-    tournament.teams << valid_team
-    tournament
-  end
-
-  def valid_team
-    team = FactoryGirl.create(:team)
-    5.times do
-      FactoryGirl.create(:map, :team => team)
+  it "should end any unfinished game in a tournament" do
+    tournament = valid_tournament
+    tournament.start!
+    Game.all.each do |game|
+      game.completed?.should be_false
     end
-    team
+    tournament.end!
+    Game.all.each do |game|
+      game.completed?.should be_true
+    end
   end
+
+  it "should calculate a league table"
 
 end

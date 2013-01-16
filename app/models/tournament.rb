@@ -1,6 +1,6 @@
 class Tournament < ActiveRecord::Base
 
-  attr_accessible :start_at, :state, :max_rounds, :current_round, :name
+  attr_accessible :start_at, :state, :max_rounds, :current_round
 
   validates_presence_of   :start_at
   validates_presence_of   :state
@@ -19,6 +19,7 @@ class Tournament < ActiveRecord::Base
     state :complete
 
     after_transition :on => :start, :do => :create_games
+    after_transition :on => :end,   :do => :end_in_progress_games
 
     event :start do
       transition :open => :in_progress, :if => lambda {|tourney| tourney.teams.size > 1 }
@@ -38,7 +39,7 @@ class Tournament < ActiveRecord::Base
       game = tournament.games.where(:team_id => team.id, :state => 'pending').first
       game.start! if game
     end
-    game
+    game.nil? ? NoGameException.new : game
   end
 
   def enter_tournament(team)
@@ -82,9 +83,16 @@ class Tournament < ActiveRecord::Base
     end
   end
 
+  def end_in_progress_games
+    self.games.non_complete.each do |game|
+      game.forfeit!
+    end
+  end
+
 end
 
 class NoTournamentException < Exception;end
+class NoGameException < Exception;end
 class ExistingTournamentEnteredException < Exception;end
 class TournamentEntryClosedException < Exception;end
 class NoMapsUploadedException < Exception;end

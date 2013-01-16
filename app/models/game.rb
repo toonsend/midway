@@ -5,20 +5,23 @@ class Game < ActiveRecord::Base
   belongs_to :map
   belongs_to :tournament
 
-  attr_accessible :moves, :state, :map, :team, :tournament
+  attr_accessible :moves, :state, :map, :team, :tournament, :total_moves
   serialize :moves, Array
 
   validates :team_id, :presence => true
   validates :map_id,  :presence => true
   validates_with GameValidator
 
-  before_validation :set_game_defaults, :on => :create
+  scope :non_complete, where("state != 'completed'")
 
   state_machine :state, :initial => :pending do
 
-    state :pending, :in_progress
+    state :pending,     :in_progress
     state :in_progress, :completed
     state :completed
+
+    after_transition :on => :forfeit,  :do => :foreit_game
+    after_transition :on => :end,      :do => :set_total_moves
 
     event :start do
       transition :pending => :in_progress
@@ -26,6 +29,11 @@ class Game < ActiveRecord::Base
 
     event :end do
       transition :in_progress => :completed
+    end
+
+    event :forfeit do
+      transition :in_progress => :completed
+      transition :pending     => :completed
     end
 
   end
@@ -36,6 +44,10 @@ class Game < ActiveRecord::Base
       self.moves << [Integer(x), Integer(y)]
     rescue
       return [false, {:error_code => "INVALID_MOVE"}]
+    end
+
+    if self.moves.size > 99
+      self.end!
     end
 
     if self.save
@@ -50,11 +62,12 @@ class Game < ActiveRecord::Base
 
   private
 
-  def set_game_defaults
-    return if !team
-    maps = Map.all - team.maps
-    #TODO define how we want to select the map
-    self.map = maps[rand(maps.length)]
+  def foreit_game
+    self.update_attribute(:total_moves, 100)
+  end
+
+  def set_total_moves
+    self.update_attribute(:total_moves, moves.size)
   end
 
   def run_moves
