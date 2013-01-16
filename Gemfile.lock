@@ -201,7 +201,7 @@ PLATFORMS
 
 DEPENDENCIES
   ZenTest (~> 4.8.1)
-  annotate
+  annotate (>= 2.5.0)
   autotest-growl (~> 0.2.16)
   autotest-rails-pure (~> 4.1.2)
   bootstrap-datepicker-rails
