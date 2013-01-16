@@ -21,8 +21,6 @@ class DashboardController < ApplicationController
     @api_key = current_user.get_api_key
     if current_user.team
       @team = current_user.team
-      @invite = current_user.team.invites.build(params[:invite])
-      @users = current_user.team.users_to_invite(current_user)
     else
       @team = Team.new
     end

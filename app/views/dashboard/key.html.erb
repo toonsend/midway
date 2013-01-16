@@ -9,31 +9,5 @@
   </div>
 
   <%= render :partial => "dashboard/team" %>
-  
-    <div class="row-fluid marketing">
-      <div class="span6">
-        <h4>Team members:</h4>
-
-        <ol>
-        <% @team.users.each do |user| %>
-          <li><%= user.email %></li>
-        <% end %>
-        </ol>
-
-      </div>
-
-      <div class="span6">
-        <h4>Invites:</h4>
-
-        <ol>
-        <% @team.invites.each do |invite| %>
-          <% if !invite.new_record? %>
-            <li><%= invite.user.email %>:<%= invite.state %></li>
-          <% end %>
-        <% end %>
-        </ol>
-
-      </div>
-    </div>
 
 </div>
