@@ -13,10 +13,10 @@ Toons/Jakub/Ben
 # Add end tournament, ends unfinished games with a count of 100
 # Detect game end
 # Ship sunk detection added to game
+# Test games are played against correct map
 
 Add deleted field to map
 Start tournament button
 End tournament functionality
-Test games are played against correct map
 Moves Tournament League table
 Best Maps Tournament League table

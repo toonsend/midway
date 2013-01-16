@@ -77,10 +77,10 @@ class Tournament < ActiveRecord::Base
   end
 
   def create_games
-    generate_round_of_games
+    generate_round_of_games(self.max_rounds)
   end
 
-  def generate_round_of_games(round = self.max_rounds)
+  def generate_round_of_games(round)
     self.teams.each do |team|
       create_games_against(team, round)
     end
