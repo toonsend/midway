@@ -1,10 +1,10 @@
-<h4>Invites sent</h4>
+<h4>Invites sent and pending response</h4>
 <table class='table'>
   <tr>
     <th>Invitee</th>
     <th>State</th>
   </tr>
-  <% @team.invites.each do |invite| %>
+  <% @team.pending_invites.each do |invite| %>
     <tr>
       <td><%= invite.user.email %></td>
       <td><%= invite.state %></td>
