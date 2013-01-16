@@ -54,24 +54,11 @@ class Game < ActiveRecord::Base
 
   def play(move)
     x,y = move
-    begin
-      self.moves << [Integer(x), Integer(y)]
-    rescue
-      return [false, {:error_code => "INVALID_MOVE"}]
-    end
-
-    if self.moves.size > 99
-      self.end!
-    end
-
-    if self.save
-      last_shot, shot_grid = run_moves
-      [true, move_state(last_shot, shot_grid)]
-    else
-      puts errors.inspect
-      #TODO error handling
-      [false, {:error_code => self.errors.first[1]}]
-    end
+    self.moves << [Integer(x), Integer(y)]
+    self.save
+    fire(ship_mappings, self.map.empty_game_grid, moves.clone)
+  rescue
+    return [false, {:error_code => "INVALID_MOVE"}]
   end
 
   private
@@ -84,19 +71,49 @@ class Game < ActiveRecord::Base
     self.update_attribute(:total_moves, moves.size)
   end
 
-  def run_moves
-    shot_grid = self.map.send(:empty_game_grid)
-    last_shot = 'none'
-    self.moves.each do |x,y|
-      if self.map.game_grid[x][y] == 'x'
-        shot_grid[x][y] = 'H'
-        last_shot = 'hit'
-      else
-        shot_grid[x][y] = 'M'
-        last_shot = 'miss'
+  def ship_mappings
+    ships = self.map.ships.collect do |ship|
+      ship.coordinates(Map::GRID_WIDTH,Map::GRID_HEIGHT)
+    end
+  end
+
+  def fire(ships, shot_grid, shots)
+    shot = shots.pop
+    last_shot = 'miss'
+    shot_grid[shot[0]][shot[1]] = 'M'
+
+    ships.each_with_index do |ship, index|
+      if ships[index].delete(shot)
+        shot_grid[shot[0]][shot[1]] = 'H'
+        last_shot =  ships[index].empty? ? 'hit and destroyed' : 'hit'
+        break
       end
     end
-    [last_shot, shot_grid]
+
+    if shots.empty?
+      check_for_end_of_game(ships)
+      return [true, move_state(last_shot, shot_grid)]
+    end
+
+    return fire(ships, shot_grid, shots)
+  end
+
+  def check_for_end_of_game(ships)
+    end_game_if_fleet_sunk(ships)
+    end_game_if_max_moves
+  end
+
+  def end_game_if_fleet_sunk(ships)
+    ships.each do |ship|
+      return false unless ship.empty?
+    end
+    self.end!
+  end
+
+  def end_game_if_max_moves
+    if self.moves.size > 99 && self.in_progress?
+      self.end!
+    end
   end
 
   def move_state(shot,shot_grid)

@@ -105,6 +105,7 @@ describe Game do
 
     before(:each) do
       @game = FactoryGirl.create(:game)
+      @game.start!
     end
 
     it "should return a hit if the move hits a boat" do
@@ -113,7 +114,23 @@ describe Game do
       result['status'].should == 'hit'
     end
 
-    it "should return a hit_and_destroyed if the move hits a boat and destroys it"
+    it "should return a hit if the move hits a boat" do
+      @game.map.ships[0].coordinates(10,10).each do |move|
+        success, result = @game.play(move)
+        success.should be_true
+      end
+    end
+
+    it "should return a hit_and_destroyed if the move hits a boat and destroys it" do
+      coordinates = @game.map.ships[0].coordinates(10,10)
+      coordinate = coordinates.pop
+      coordinates.each do |move|
+        success, result = @game.play(move)
+      end
+      success, result = @game.play(coordinate)
+      success.should be_true
+      result['status'].should == 'hit and destroyed'
+    end
 
     it "should return a miss if the move fails to hit a boat" do
       success, result = @game.play([0,1])
@@ -127,23 +144,28 @@ describe Game do
       result['status'].should == 'miss'
     end
 
-  end
+    describe "game ending" do
 
-  describe "game ending" do
-
-    before(:each) do
-      @game = FactoryGirl.create(:game)
-    end
-
-    it "should end the game if all the ships have been sunk"
-
-    it "should change the state to complete if moves reach 100" do
-      @game.start!
-      99.times do
-        @game.moves << [0,0]
+      it "should end game when all the ships are sunk" do
+        moves = 0
+        @game.map.ships.each do |ship|
+          ship.coordinates(10,10).each do |move|
+            success, result = @game.play(move)
+            success.should be_true
+            moves += 1
+          end
+        end
+        @game.state.should == 'completed'
+        @game.total_moves.should == moves
       end
-      @game.play([0,0])
-      @game.completed?.should be_true
+
+      it "should change the state to complete if moves reach 100" do
+        99.times do
+          @game.moves << [0,0]
+        end
+        @game.play([0,0])
+        @game.completed?.should be_true
+      end
     end
 
   end
