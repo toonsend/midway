@@ -50,11 +50,11 @@ describe TeamsController do
         assigns(:team).should eq(@user.team)
       end
 
-      it "should assign invite with a new record that has the current user's team as the inviter" do
-        get :index
-        assigns(:invite).should_not be_nil
-        assigns(:invite).team.should eq(@user.team)
-      end
+      # it "should assign invite with a new record that has the current user's team as the inviter" do
+      #   get :index
+      #   assigns(:invite).should_not be_nil
+      #   assigns(:invite).team.should eq(@user.team)
+      # end
 
       it "should assign users with a list of users the current user's team can invite" do
         # controller.current_user.team.should_receive(:users_to_invite).with(@user)
@@ -86,21 +86,21 @@ describe TeamsController do
       }.should_not change(Team, :count).by(1)
       @user.reload
       @user.team.should be_nil
-      response.should redirect_to key_path
+      response.should redirect_to teams_path
     end
 
     it "should create a new team" do
       lambda {
         post :create, :team => { :name => "Best team"}
       }.should change(Team, :count).by(1)
-      response.should redirect_to key_path
+      response.should redirect_to teams_path
     end
 
     it "should set the current user as part of the team" do
       post :create, :team => { :name => "Best team"}
       @user.reload
       @user.team.should == Team.find_by_name("Best team")
-      response.should redirect_to key_path
+      response.should redirect_to teams_path
     end
   end
 

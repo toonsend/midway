@@ -6,7 +6,7 @@
   </tr>
   <% @team.invites.each do |invite| %>
     <tr>
-      <td><%= invite.user %></td>
+      <td><%= invite.user.email %></td>
       <td><%= invite.state %></td>
     </tr>
   <% end %>
