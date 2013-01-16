@@ -1,12 +1,7 @@
  <% if @team.new_record? %>
-    <h4>
-      Hello, create a team so you can start a game.
-    </h4>
-
-    <%= form_for @team do |f| %>
-      <%= f.text_field :name, {:placeholder => "Team name"} %>
-      <%= f.submit "Create team", {:class => "btn btn-primary"} %>
-    <% end %>
+    <h5>
+      <%= link_to 'Create or join a team', teams_path %> to start a game.
+    </h5>
   <% else %>
     <div class="input-prepend">
       <span class="add-on">TEAM NAME</span>
@@ -17,12 +12,7 @@
       <input class="span4" id="teamIdInput" type="text" value="<%= @team.id %>">
     </div>
 
-    <h4>
-      Invite people to the coolest team!
-    </h4>
-
-    <%= form_for @invite do |f| %>
-      <%= f.select :invitee, options_for_select(@users.map {|user| [user.email, user.id] }) %>
-      <%= f.submit "Invite", {:class => "btn btn-primary"} %>
-    <% end %>
+    <h5>
+      <%= link_to 'Invite', teams_path %> people to join your team!
+    </h5>
   <% end %>

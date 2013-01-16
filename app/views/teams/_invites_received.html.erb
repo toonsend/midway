@@ -1,0 +1,23 @@
+<h4>Manage invites</h4>
+<table class='table'>
+  <tr>
+    <th>Inviter</th>
+    <th>Actions</th>
+  </tr>
+  <% current_user.invites.each do |invite| %>
+    <tr>
+      <td><%= invite.team.name %></td>
+      <td>
+        <%= form_for invite, :as => :put, :html => {:class => "form-inline"} do |f| %>
+          <%= f.submit "Accept", {:class => "btn btn-success"} %>
+          <%= f.submit "Decline", {:class => "btn btn-danger"} %>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  <% if current_user.invites.empty? %>
+    <tr>
+      <td colspan='2'>No invites received</td>
+    </tr>
+  <% end %>
+</table>

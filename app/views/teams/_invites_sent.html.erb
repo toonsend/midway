@@ -1,0 +1,18 @@
+<h4>Invites sent</h4>
+<table class='table'>
+  <tr>
+    <th>Invitee</th>
+    <th>State</th>
+  </tr>
+  <% @team.invites.each do |invite| %>
+    <tr>
+      <td><%= invite.user %></td>
+      <td><%= invite.state %></td>
+    </tr>
+  <% end %>
+  <% if @team.invites.empty? %>
+    <tr>
+      <td colspan='2'>No invites sent</td>
+    </tr>
+  <% end %>
+</table>
