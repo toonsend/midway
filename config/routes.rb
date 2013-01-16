@@ -4,10 +4,11 @@ Midway::Application.routes.draw do
   resources :teams do
     resources :game
     resources :maps
+    resources :invites, :except => :update
   end
 
+  resources :invites, :only => :update
   resources :tournaments
-  resources :invites
 
   root :to => "dashboard#index"
   match "/api" => "dashboard#api", :as => :api

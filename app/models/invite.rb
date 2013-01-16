@@ -24,7 +24,7 @@ class Invite < ActiveRecord::Base
     state :pending, :accepted, :declined
 
     event :accept do
-      transition :pending => :accepted
+      transition :pending => :accepted, :unless => :user_already_has_team?
     end
     after_transition :on => :accept, :do => :add_user_to_team
 
@@ -34,6 +34,10 @@ class Invite < ActiveRecord::Base
   end
 
   private
+
+  def user_already_has_team?
+    user.team
+  end
 
   def add_user_to_team
     team.users << user
