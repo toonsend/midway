@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: invites
+#
+#  id         :integer          not null, primary key
+#  inviter    :integer
+#  invitee    :integer
+#  state      :string(255)
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
 require 'spec_helper'
 
 describe Invite do

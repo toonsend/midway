@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: tournaments
+#
+#  id            :integer          not null, primary key
+#  name          :string(255)
+#  state         :string(255)
+#  current_round :integer          default(0)
+#  max_rounds    :integer
+#  start_at      :datetime
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#
+
 require 'spec_helper'
 
 describe Tournament do

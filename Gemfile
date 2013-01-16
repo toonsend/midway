@@ -22,6 +22,7 @@ group :development do
   gem 'rvm-capistrano'
   gem 'capistrano-ext', "~> 1.2.1"
   gem 'thin', '~> 1.5.0'
+  gem 'annotate'
 end
 
 group :development, :test do

@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: games
+#
+#  id            :integer          not null, primary key
+#  moves         :text
+#  state         :string(255)
+#  map_id        :integer
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  tournament_id :integer
+#  team_id       :integer
+#
+
 require 'spec_helper'
 
 describe Game do
