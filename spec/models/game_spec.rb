@@ -3,13 +3,13 @@
 # Table name: games
 #
 #  id            :integer          not null, primary key
-#  team_id       :integer
-#  map_id        :integer
 #  moves         :text
 #  state         :string(255)
+#  map_id        :integer
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  tournament_id :integer
+#  team_id       :integer
 #
 
 require 'spec_helper'
