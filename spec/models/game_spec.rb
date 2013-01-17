@@ -108,6 +108,21 @@ describe Game do
       @game.start!
     end
 
+    it "should return hit after hit and previously destroyed a boat" do
+
+      @game.play([0,0])
+      @game.play([1,0])
+      @game.play([2,0])
+      @game.play([3,0])
+      success, result = @game.play([4,0])
+
+      result['status'].should == "hit and destroyed"
+
+      success, result = @game.play([6,2])
+      result['status'].should == "hit"
+
+    end
+
     it "should return a hit if the move hits a boat" do
       success, result = @game.play([0,0])
       success.should be_true
