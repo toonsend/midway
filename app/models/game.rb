@@ -78,7 +78,7 @@ class Game < ActiveRecord::Base
   end
 
   def fire(ships, shot_grid, shots)
-    shot = shots.pop
+    shot = shots.shift
     last_shot = 'miss'
     shot_grid[shot[0]][shot[1]] = 'M'
 
