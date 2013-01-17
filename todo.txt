@@ -6,15 +6,17 @@ Leave team functionality
 
 Toons/Jakub/Ben
 
-Add annotate gem to project
+# Add annotate gem to project
+# Add tournament functionality to team controller
+# Add a total moves to game model
+# Add 100 moves end game
+# Add end tournament, ends unfinished games with a count of 100
+# Detect game end
+# Ship sunk detection added to game
+# Test games are played against correct map
+
+Add deleted field to map
 Start tournament button
-Enter tournament functionality
-Add tournament functionality to team controller
-Test games are played against correct map
-Detect game end
-Ship sunk detection added to game
-Add a total moves to game model
-Add 100 moves end game
-Add end tournament, ends unfinished games with a count of 100
+End tournament functionality
 Moves Tournament League table
 Best Maps Tournament League table

@@ -11,16 +11,17 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130114161436) do
+ActiveRecord::Schema.define(:version => 20130115224812) do
 
   create_table "games", :force => true do |t|
     t.text     "moves"
     t.string   "state"
     t.integer  "map_id"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
     t.integer  "tournament_id"
     t.integer  "team_id"
+    t.integer  "total_moves",   :default => 0
   end
 
   create_table "invites", :force => true do |t|

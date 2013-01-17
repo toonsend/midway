@@ -38,6 +38,7 @@ describe GameController do
       end
 
       it "should return a NO_GAME error if there's no maps to play against" do
+        Tournament.stub(:get_game).and_raise(NoGameException.new)
         request.env['HTTP_MIDWAY_API_KEY'] = @user.api_key
         post :create, :team_id => @team.id, :move => [200, 100]
         response.status.should == 422
@@ -46,20 +47,8 @@ describe GameController do
         res["message"].should == "There is currently no game to play"
       end
 
-      it "should return a NO_MAPS_UPLOADED error if the user hasn't uploaded a map yet" do
-        opponent_team = FactoryGirl.create(:team)
-        FactoryGirl.create(:map, :team_id => opponent_team.id)
-        request.env['HTTP_MIDWAY_API_KEY'] = @user.api_key
-        post :create, :team_id => @team.id, :move => [200, 100]
-        response.status.should == 422
-        res = JSON::parse(response.body)
-        res["error_code"].should == "NO_MAPS_UPLOADED"
-        res["message"].should == "Your team does not have any maps so can not enter tournament"
-      end
-
       it "should return an INVALID_MOVE error if an invalid move is submitted" do
-        FactoryGirl.create(:map, :team_id => @team.id)
-        FactoryGirl.create(:map, :team_id => 2)
+        Tournament.stub(:get_game).and_return(FactoryGirl.create(:game))
         request.env['HTTP_MIDWAY_API_KEY'] = @user.api_key
         post :create, :team_id => @team.id, :move => [200, [100]]
         response.status.should == 422
@@ -69,14 +58,11 @@ describe GameController do
       end
 
       it "should return the move state if the move is valid" do
-        FactoryGirl.create(:map, :team_id => @team.id)
-        opponent_team = FactoryGirl.create(:team)
-        FactoryGirl.create(:map, :team_id => opponent_team.id)
+        Tournament.stub(:get_game).and_return(FactoryGirl.create(:game))
         request.env['HTTP_MIDWAY_API_KEY'] = @user.api_key
         post :create, :team_id => @team.id, :move => [0, 0]
         response.status.should == 200
         res = JSON::parse(response.body)
-        res["opponent_id"].should == opponent_team.id
         res["move"].should == [0,0]
       end
 

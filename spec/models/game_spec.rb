@@ -3,13 +3,13 @@
 # Table name: games
 #
 #  id            :integer          not null, primary key
-#  team_id       :integer
-#  map_id        :integer
 #  moves         :text
 #  state         :string(255)
+#  map_id        :integer
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  tournament_id :integer
+#  team_id       :integer
 #
 
 require 'spec_helper'
@@ -39,37 +39,73 @@ describe Game do
       game.errors[:moves].should == ["INVALID_MOVE"]
     end
 
-    it "should validate the user has uploaded some maps" do
-      game = FactoryGirl.build(:game)
-      game.should_not be_valid
-      game.should have(1).error_on(:team_id)
-      game.errors[:team_id].should == ["NO_MAPS_UPLOADED"]
-    end
-  end
-
-  describe "test game" do
-
-    it "should return a new a test game if one doesn't exist"
-    it "should return the existing test game if one exists in progress"
-
   end
 
   describe "states" do
 
-    it "should begin in pending"
-    it "should progress from pending to in_progress"
-    it "should progress from in_progress to complete"
-    it "should render the current game map as a 10 element array"
+    it "should begin in pending" do
+      game = FactoryGirl.create(:game)
+      game.pending?.should be_true
+    end
+
+    it "should progress from pending to in_progress" do
+      game = FactoryGirl.create(:game)
+      game.start!
+      game.in_progress?.should be_true
+    end
+
+    it "should progress from in_progress to complete" do
+      game = FactoryGirl.create(:game)
+      game.start!
+      game.end!
+      game.completed?.should be_true
+    end
+
+    it "should mark the total moves when game is completed" do
+      game = FactoryGirl.create(:game)
+      game.start!
+      game.play([0,0])
+      game.play([3,5])
+      game.end!
+      game.total_moves.should == 2
+    end
+
+    it "should progress from in_progress to complete with forfeit" do
+      game = FactoryGirl.create(:game)
+      game.start!
+      game.forfeit!
+      game.completed?.should be_true
+    end
+
+    it "should progress from pending to complete with forfeit" do
+      game = FactoryGirl.create(:game)
+      game.forfeit!
+      game.completed?.should be_true
+    end
+
+    it "should mark total moves as 100 after forfeit" do
+      game = FactoryGirl.create(:game)
+      game.forfeit!
+      game.total_moves.should == 100
+    end
+
+    it "should show all in progress games" do
+      game1 = FactoryGirl.create(:game)
+      game2 = FactoryGirl.create(:game)
+      game2.update_attribute(:state, 'completed')
+      game3 = FactoryGirl.create(:game)
+      game3.update_attribute(:state, 'in_progress')
+      Game.non_complete.should == [game1, game3]
+    end
+
 
   end
 
   describe "#play" do
+
     before(:each) do
-      @team = FactoryGirl.create(:team)
-      @opponent = FactoryGirl.create(:team)
-      @map = FactoryGirl.create(:map, :team => @team)
-      @opponent_map = FactoryGirl.create(:map, :team => @opponent)
-      @game = FactoryGirl.create(:game, :team => @team)
+      @game = FactoryGirl.create(:game)
+      @game.start!
     end
 
     it "should return a hit if the move hits a boat" do
@@ -78,7 +114,23 @@ describe Game do
       result['status'].should == 'hit'
     end
 
-    it "should return a hit_and_destroyed if the move hits a boat and destroys it"
+    it "should return a hit if the move hits a boat" do
+      @game.map.ships[0].coordinates(10,10).each do |move|
+        success, result = @game.play(move)
+        success.should be_true
+      end
+    end
+
+    it "should return a hit_and_destroyed if the move hits a boat and destroys it" do
+      coordinates = @game.map.ships[0].coordinates(10,10)
+      coordinate = coordinates.pop
+      coordinates.each do |move|
+        success, result = @game.play(move)
+      end
+      success, result = @game.play(coordinate)
+      success.should be_true
+      result['status'].should == 'hit and destroyed'
+    end
 
     it "should return a miss if the move fails to hit a boat" do
       success, result = @game.play([0,1])
@@ -91,13 +143,30 @@ describe Game do
       success.should be_true
       result['status'].should == 'miss'
     end
-  end
 
-  describe "game ending" do
+    describe "game ending" do
 
-    it "should end the game if there have been 100 moves"
-    it "should end the game if all the ships have been sunk"
-    it "should end the game and increase the moves to 100 after failed_to_complete action"
+      it "should end game when all the ships are sunk" do
+        moves = 0
+        @game.map.ships.each do |ship|
+          ship.coordinates(10,10).each do |move|
+            success, result = @game.play(move)
+            success.should be_true
+            moves += 1
+          end
+        end
+        @game.state.should == 'completed'
+        @game.total_moves.should == moves
+      end
+
+      it "should change the state to complete if moves reach 100" do
+        99.times do
+          @game.moves << [0,0]
+        end
+        @game.play([0,0])
+        @game.completed?.should be_true
+      end
+    end
 
   end
 

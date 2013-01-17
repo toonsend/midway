@@ -45,3 +45,19 @@ def valid_grid_params
   '[[0,0,5,"across"], [2, 2, 4, "across"], [3, 6, 3, "down"], [7, 8, 3, "across"], [4, 6, 2, "across"]]'
 end
 
+def valid_tournament
+  tournament = FactoryGirl.create(:tournament)
+  tournament.teams << valid_team
+  tournament.teams << valid_team
+  tournament
+end
+
+def valid_team
+  team = FactoryGirl.create(:team)
+  5.times do
+    FactoryGirl.create(:map, :team => team)
+  end
+  team
+end
+
+

@@ -47,6 +47,17 @@ class Map < ActiveRecord::Base
     puts str.join("\n")
   end
 
+  def empty_game_grid
+    game_grid = []
+    GRID_WIDTH.times do |x|
+      game_grid[x] = []
+      GRID_HEIGHT.times do |y|
+        game_grid[x][y] = 'o'
+      end
+    end
+    game_grid
+  end
+
   private
 
   def fill_game_grid
@@ -55,17 +66,6 @@ class Map < ActiveRecord::Base
       ship.coordinates(GRID_WIDTH, GRID_HEIGHT).each do |x,y|
         raise(MapValidator::ShipOverlapException.new) if (game_grid[x][y] == 'x')
         game_grid[x][y] = 'x'
-      end
-    end
-    game_grid
-  end
-
-  def empty_game_grid
-    game_grid = []
-    GRID_WIDTH.times do |x|
-      game_grid[x] = []
-      GRID_HEIGHT.times do |y|
-        game_grid[x][y] = 'o'
       end
     end
     game_grid

@@ -239,5 +239,6 @@ curl -H "HTTP_MIDWAY_API_KEY: <%= @api_key %>" -H "Content-Type: application/jso
 
 * OUT_OF_RANGE, move is outside of map
 * NO_GAME, There is currently no game to play
+* NO_TOURNAMENT, Your team is not currently in any in progress tournament
 * BADLY_FORMED_REQUEST, Request is invalid
 * NO_MAPS_UPLOADED, Your team does not have any maps so can not enter tournament

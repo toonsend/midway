@@ -152,6 +152,25 @@ describe Tournament do
     }.to change(Game, :count).by(tournament.max_rounds * tournament.teams.size)
   end
 
+  it "should create tournament games on start based on max rounds" do
+    tournament = valid_tournament
+    tournament.teams << valid_team
+    tournament.update_attribute(:max_rounds, 2)
+    expect {
+      tournament.start!
+    }.to change(Game, :count).by(12)
+  end
+
+  it "should create tournament games on with correct team id" do
+    tournament = valid_tournament
+    tournament.teams << valid_team
+    tournament.update_attribute(:max_rounds, 2)
+    tournament.start!
+    tournament.teams.each do |team|
+      Game.where(:team_id => team.id).count.should == 4
+    end
+  end
+
   it "should return current game given team_id" do
     tournament = valid_tournament
     team       = valid_team
@@ -160,22 +179,18 @@ describe Tournament do
     Tournament.get_game(team).should be_an_instance_of(Game)
   end
 
-  it "should raise tournament over if there are no more games to play"
-  it "should calculate a league table"
-
-  def valid_tournament
-    tournament = FactoryGirl.create(:tournament)
-    tournament.teams << valid_team
-    tournament.teams << valid_team
-    tournament
-  end
-
-  def valid_team
-    team = FactoryGirl.create(:team)
-    5.times do
-      FactoryGirl.create(:map, :team => team)
+  it "should end any unfinished game in a tournament" do
+    tournament = valid_tournament
+    tournament.start!
+    Game.all.each do |game|
+      game.completed?.should be_false
     end
-    team
+    tournament.end!
+    Game.all.each do |game|
+      game.completed?.should be_true
+    end
   end
+
+  it "should calculate a league table"
 
 end
