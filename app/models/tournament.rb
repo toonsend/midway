@@ -14,7 +14,7 @@
 
 class Tournament < ActiveRecord::Base
 
-  attr_accessible :start_at, :state, :max_rounds, :current_round
+  attr_accessible :start_at, :state, :max_rounds, :current_round, :name
 
   validates_presence_of   :start_at
   validates_presence_of   :state
