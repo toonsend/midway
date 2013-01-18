@@ -174,6 +174,28 @@ describe Game do
         @game.total_moves.should == moves
       end
 
+      it "should fill in the grid correctly when sent duplicate moves" do
+        success, result = @game.play([0,0])
+        result['status'].should == "hit"
+        success, result = @game.play([0,0])
+        result['status'].should == "miss"
+      end
+
+      it "should report duplicate moves as a miss" do
+        success, result = @game.play([0,0])
+        result['status'].should == "hit"
+        success, result = @game.play([0,0])
+        result['status'].should == "miss"
+      end
+
+      it "should fill in the grid correctly when sent duplicate moves" do
+        success, result = @game.play([0,0])
+        result['grid'][0][0].should == 'H'
+        success, result = @game.play([0,0])
+        result['grid'][0][0].should == 'H'
+      end
+
+
       it "should change the state to complete if moves reach 100" do
         99.times do
           @game.moves << [0,0]

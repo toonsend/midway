@@ -28,6 +28,13 @@ class Game < ActiveRecord::Base
 
   scope :non_complete, where("state != 'completed'")
 
+  HIT_MESSAGE = 'hit'
+  MISS_MESSAGE = 'miss'
+  HIT_AND_DESTROYED_MESSAGE = 'hit and destroyed'
+
+  MAP_HIT_SYMBOL = 'H'
+  MAP_MISS_SYMBOL = 'M'
+
   state_machine :state, :initial => :pending do
 
     state :pending,     :in_progress
@@ -79,13 +86,13 @@ class Game < ActiveRecord::Base
 
   def fire(ships, shot_grid, shots)
     shot = shots.shift
-    last_shot = 'miss'
-    shot_grid[shot[0]][shot[1]] = 'M'
+    last_shot = MISS_MESSAGE
+    update_shot_grid_with_miss(shot_grid, shot)
 
     ships.each_with_index do |ship, index|
       if ships[index].delete(shot)
-        shot_grid[shot[0]][shot[1]] = 'H'
-        last_shot =  ships[index].empty? ? 'hit and destroyed' : 'hit'
+        last_shot =  ships[index].empty? ? HIT_AND_DESTROYED_MESSAGE : HIT_MESSAGE
+        update_shot_grid_with_hit(shot_grid, shot)
         break
       end
     end
@@ -96,6 +103,16 @@ class Game < ActiveRecord::Base
     end
 
     return fire(ships, shot_grid, shots)
+  end
+
+  def update_shot_grid_with_hit(shot_grid, shot)
+    shot_grid[shot[0]][shot[1]] = MAP_HIT_SYMBOL
+  end
+
+  def update_shot_grid_with_miss(shot_grid, shot)
+    if shot_grid[shot[0]][shot[1]] !=  MAP_HIT_SYMBOL
+      shot_grid[shot[0]][shot[1]] = MAP_MISS_SYMBOL
+    end
   end
 
   def check_for_end_of_game(ships)

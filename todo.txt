@@ -20,3 +20,8 @@ Start tournament button
 End tournament functionality
 Moves Tournament League table
 Best Maps Tournament League table
+
+change underscores in API key to dashes
+add nginx start and stop scripts
+Remove team on start if they have no maps
+Change localhost in apidocs
