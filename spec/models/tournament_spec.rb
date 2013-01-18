@@ -56,14 +56,14 @@ describe Tournament do
 
   it "should move from open to in_progress state" do
     tournament = valid_tournament
-    tournament.start!
+    tournament.start_tournament!
     tournament.state.should == 'in_progress'
   end
 
   it "should move from in_progress to complete state" do
     tournament = valid_tournament
-    tournament.start!
-    tournament.end!
+    tournament.start_tournament!
+    tournament.end_tournament!
     tournament.state.should == 'complete'
   end
 
@@ -132,23 +132,23 @@ describe Tournament do
     team       = valid_team
     tournament = FactoryGirl.create(:tournament)
     expect {
-      tournament.start!
+      tournament.start_tournament!
     }.to raise_error(StateMachine::InvalidTransition)
 
     tournament.teams << valid_team
     expect {
-      tournament.start!
+      tournament.start_tournament!
     }.to raise_error(StateMachine::InvalidTransition)
 
     tournament.teams << valid_team
-    tournament.start!
+    tournament.start_tournament!
     tournament.in_progress?.should be_true
   end
 
   it "should create tournament games on start" do
     tournament = valid_tournament
     expect {
-      tournament.start!
+      tournament.start_tournament!
     }.to change(Game, :count).by(tournament.max_rounds * tournament.teams.size)
   end
 
@@ -157,7 +157,7 @@ describe Tournament do
     tournament.teams << valid_team
     tournament.update_attribute(:max_rounds, 2)
     expect {
-      tournament.start!
+      tournament.start_tournament!
     }.to change(Game, :count).by(12)
   end
 
@@ -165,7 +165,7 @@ describe Tournament do
     tournament = valid_tournament
     tournament.teams << valid_team
     tournament.update_attribute(:max_rounds, 2)
-    tournament.start!
+    tournament.start_tournament!
     tournament.teams.each do |team|
       Game.where(:team_id => team.id).count.should == 4
     end
@@ -175,17 +175,17 @@ describe Tournament do
     tournament = valid_tournament
     team       = valid_team
     tournament.teams << team
-    tournament.start!
+    tournament.start_tournament!
     Tournament.get_game(team).should be_an_instance_of(Game)
   end
 
   it "should end any unfinished game in a tournament" do
     tournament = valid_tournament
-    tournament.start!
+    tournament.start_tournament!
     Game.all.each do |game|
       game.completed?.should be_false
     end
-    tournament.end!
+    tournament.end_tournament!
     Game.all.each do |game|
       game.completed?.should be_true
     end

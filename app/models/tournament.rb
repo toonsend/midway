@@ -28,18 +28,18 @@ class Tournament < ActiveRecord::Base
 
   state_machine :state, :initial => :open do
 
-    state :open, :in_progress
+    state :open,        :in_progress
     state :in_progress, :complete
     state :complete
 
-    after_transition :on => :start, :do => :create_games
-    after_transition :on => :end,   :do => :end_in_progress_games
+    after_transition :on => :start_tournament, :do => :create_games
+    after_transition :on => :end_tournament,   :do => :end_in_progress_games
 
-    event :start do
-      transition :open => :in_progress, :if => lambda {|tourney| tourney.teams.size > 1 }
+    event :start_tournament do
+      transition :open => :in_progress, :if => lambda { |tourney| tourney.teams.size > 1 }
     end
 
-    event :end do
+    event :end_tournament do
       transition :in_progress => :complete
     end
 
