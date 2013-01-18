@@ -51,7 +51,7 @@ class Tournament < ActiveRecord::Base
     game = tournament.games.where(:team_id => team.id, :state => 'in_progress').first
     unless game
       game = tournament.games.where(:team_id => team.id, :state => 'pending').first
-      game.start! if game
+      game.start_game! if game
     end
     game.nil? ? NoGameException.new : game
   end
@@ -99,7 +99,7 @@ class Tournament < ActiveRecord::Base
 
   def end_in_progress_games
     self.games.non_complete.each do |game|
-      game.forfeit!
+      game.forfeit_game!
     end
   end
 

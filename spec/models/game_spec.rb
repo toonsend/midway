@@ -50,42 +50,42 @@ describe Game do
 
     it "should progress from pending to in_progress" do
       game = FactoryGirl.create(:game)
-      game.start!
+      game.start_game!
       game.in_progress?.should be_true
     end
 
     it "should progress from in_progress to complete" do
       game = FactoryGirl.create(:game)
-      game.start!
-      game.end!
+      game.start_game!
+      game.end_game!
       game.completed?.should be_true
     end
 
     it "should mark the total moves when game is completed" do
       game = FactoryGirl.create(:game)
-      game.start!
+      game.start_game!
       game.play([0,0])
       game.play([3,5])
-      game.end!
+      game.end_game!
       game.total_moves.should == 2
     end
 
     it "should progress from in_progress to complete with forfeit" do
       game = FactoryGirl.create(:game)
-      game.start!
-      game.forfeit!
+      game.start_game!
+      game.forfeit_game!
       game.completed?.should be_true
     end
 
     it "should progress from pending to complete with forfeit" do
       game = FactoryGirl.create(:game)
-      game.forfeit!
+      game.forfeit_game!
       game.completed?.should be_true
     end
 
     it "should mark total moves as 100 after forfeit" do
       game = FactoryGirl.create(:game)
-      game.forfeit!
+      game.forfeit_game!
       game.total_moves.should == 100
     end
 
@@ -105,7 +105,7 @@ describe Game do
 
     before(:each) do
       @game = FactoryGirl.create(:game)
-      @game.start!
+      @game.start_game!
     end
 
     it "should return hit after hit and previously destroyed a boat" do

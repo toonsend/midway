@@ -28,11 +28,11 @@ class Game < ActiveRecord::Base
 
   scope :non_complete, where("state != 'completed'")
 
-  HIT_MESSAGE = 'hit'
-  MISS_MESSAGE = 'miss'
+  HIT_MESSAGE               = 'hit'
+  MISS_MESSAGE              = 'miss'
   HIT_AND_DESTROYED_MESSAGE = 'hit and destroyed'
 
-  MAP_HIT_SYMBOL = 'H'
+  MAP_HIT_SYMBOL  = 'H'
   MAP_MISS_SYMBOL = 'M'
 
   state_machine :state, :initial => :pending do
@@ -41,18 +41,18 @@ class Game < ActiveRecord::Base
     state :in_progress, :completed
     state :completed
 
-    after_transition :on => :forfeit,  :do => :foreit_game
-    after_transition :on => :end,      :do => :set_total_moves
+    after_transition :on => :forfeit_game,  :do => :set_total_moves_to_maximum
+    after_transition :on => :end_game,      :do => :set_total_moves
 
-    event :start do
+    event :start_game do
       transition :pending => :in_progress
     end
 
-    event :end do
+    event :end_game do
       transition :in_progress => :completed
     end
 
-    event :forfeit do
+    event :forfeit_game do
       transition :in_progress => :completed
       transition :pending     => :completed
     end
@@ -70,8 +70,8 @@ class Game < ActiveRecord::Base
 
   private
 
-  def foreit_game
-    self.update_attribute(:total_moves, 100)
+  def set_total_moves_to_maximum
+    self.update_attribute(:total_moves, Map::GRID_WIDTH * Map::GRID_HEIGHT)
   end
 
   def set_total_moves
@@ -80,7 +80,7 @@ class Game < ActiveRecord::Base
 
   def ship_mappings
     ships = self.map.ships.collect do |ship|
-      ship.coordinates(Map::GRID_WIDTH,Map::GRID_HEIGHT)
+      ship.coordinates(Map::GRID_WIDTH, Map::GRID_HEIGHT)
     end
   end
 
@@ -124,12 +124,12 @@ class Game < ActiveRecord::Base
     ships.each do |ship|
       return false unless ship.empty?
     end
-    self.end!
+    self.end_game!
   end
 
   def end_game_if_max_moves
     if self.moves.size > 99 && self.in_progress?
-      self.end!
+      self.end_game!
     end
   end
 
