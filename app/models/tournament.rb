@@ -26,9 +26,9 @@ class Tournament < ActiveRecord::Base
   has_many :tournament_teams
   has_many :teams, :through => :tournament_teams
 
-  state_machine :state, :initial => :open do
+  state_machine :state, :initial => :open_to_entry do
 
-    state :open,        :in_progress
+    state :open_to_entry,        :in_progress
     state :in_progress, :complete
     state :complete
 
@@ -36,7 +36,7 @@ class Tournament < ActiveRecord::Base
     after_transition :on => :end_tournament,   :do => :end_in_progress_games
 
     event :start_tournament do
-      transition :open => :in_progress, :if => lambda { |tourney| tourney.teams.size > 1 }
+      transition :open_to_entry => :in_progress, :if => lambda { |tourney| tourney.teams.size > 1 }
     end
 
     event :end_tournament do
@@ -69,6 +69,9 @@ class Tournament < ActiveRecord::Base
     self.teams << team
   end
 
+  def team_can_join?(team)
+
+  end
 
   private
 

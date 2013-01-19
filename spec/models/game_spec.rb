@@ -98,7 +98,6 @@ describe Game do
       Game.non_complete.should == [game1, game3]
     end
 
-
   end
 
   describe "#play" do

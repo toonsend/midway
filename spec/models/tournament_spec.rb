@@ -49,12 +49,12 @@ describe Tournament do
     tournament.current_round.should == 0
   end
 
-  it "should start in open state" do
+  it "should start in open_to_entry state" do
     tournament = FactoryGirl.build(:tournament)
-    tournament.state.should == 'open'
+    tournament.state.should == 'open_to_entry'
   end
 
-  it "should move from open to in_progress state" do
+  it "should move from open_to_entry to in_progress state" do
     tournament = valid_tournament
     tournament.start_tournament!
     tournament.state.should == 'in_progress'
@@ -79,7 +79,7 @@ describe Tournament do
     tournament.teams.size.should == 1
   end
 
-  it "should allow a team to only enter one in progress or open tournament" do
+  it "should allow a team to only enter one in progress or open_to_entry tournament" do
     team       = valid_team
     tournament = FactoryGirl.create(:tournament)
     tournament.enter_tournament(team)
@@ -189,6 +189,15 @@ describe Tournament do
     Game.all.each do |game|
       game.completed?.should be_true
     end
+  end
+
+  describe "joining a tournament" do
+
+    it "should allow a team to join the tournament"
+    it "should not allow a team to join a tournament if they are already in an tournament"
+    it "should not allow a team to join a tournament if the tournament is in_progress"
+    it "should not allow a team to join a tournament if the tournament is complete"
+
   end
 
   it "should calculate a league table"
