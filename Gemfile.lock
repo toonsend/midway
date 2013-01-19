@@ -112,6 +112,8 @@ GEM
       net-ssh (>= 1.99.1)
     orm_adapter (0.4.0)
     polyglot (0.3.3)
+    quiet_assets (1.0.1)
+      railties (~> 3.1)
     rack (1.4.1)
     rack-cache (1.2)
       rack (>= 0.4)
@@ -214,6 +216,7 @@ DEPENDENCIES
   factory_girl_rails (~> 4.1.0)
   jquery-rails
   mysql2
+  quiet_assets
   rails (= 3.2.9)
   redcarpet (= 1.17.2)
   rspec-rails (~> 2.11.4)

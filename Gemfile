@@ -23,6 +23,7 @@ group :development do
   gem 'capistrano-ext', "~> 1.2.1"
   gem 'thin', '~> 1.5.0'
   gem 'annotate', ">=2.5.0"
+  gem 'quiet_assets'
 end
 
 group :development, :test do
