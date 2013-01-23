@@ -1,6 +1,11 @@
 <div class="row-fluid marketing">
   <div class="span12">
     <h4>Tournaments:</h4>
+    <% if flash[:error] %>
+      <div class="alert alert-error">
+        <%= flash[:error] %>
+      </div>
+    <% end %>
     <table class='table'>
       <tr>
         <th>Name</th>
@@ -14,6 +19,13 @@
           <td><%= tournament.state %></td>
           <td><%= tournament.max_rounds %></td>
           <td><%= tournament.start_at %></td>
+					<td>
+						<% if @team %>
+					    <%= button_to "join", tournaments_teams_url(:team_id => @team, :tournament_id => tournament.id) %>
+						<% else %>
+							join
+						<% end %>
+					</td>
         </tr>
       <% end %>
       <% if @tournaments.empty? %>
@@ -24,16 +36,7 @@
     </table>
     <hr />
     <h4>Create Tournament:</h4>
-    <% if flash[:error] %>
-      <div class="alert alert-error">
-        <% flash[:error].each do |msg| %>
-          <%= msg %>
-          <br/>
-        <% end %>
-      </div>
-    <%end %>
     <%= form_for [Tournament.new] do |f| %>
-
       <%= f.label :name %>
       <%= f.text_field :name %>
       <%= f.label :max_rounds, "number of rounds" %>
