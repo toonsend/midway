@@ -19,8 +19,8 @@ ActiveRecord::Schema.define(:version => 20130115224812) do
     t.integer  "map_id"
     t.datetime "created_at",                   :null => false
     t.datetime "updated_at",                   :null => false
-    t.integer  "tournament_id"
     t.integer  "team_id"
+    t.integer  "tournament_id"
     t.integer  "total_moves",   :default => 0
   end
 
