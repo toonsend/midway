@@ -14,6 +14,7 @@ Toons/Jakub/Ben
 # Detect game end
 # Ship sunk detection added to game
 # Test games are played against correct map
+# Change localhost in apidocs
 
 Add deleted field to map
 Start tournament button
@@ -23,5 +24,3 @@ Best Maps Tournament League table
 
 change underscores in API key to dashes
 add nginx start and stop scripts
-Remove team on start if they have no maps
-Change localhost in apidocs

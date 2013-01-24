@@ -9,7 +9,11 @@
 In the http header of any request you need to include your Midway API key
 
 ```
+<<<<<<< HEAD
 curl -H "HTTP-MIDWAY-API-KEY: <%= @api_key %>" http://localhost:3000/teams/<%= @team_id %>/maps
+=======
+curl -H "HTTP_MIDWAY_API_KEY: <%= @api_key %>" http://<%= @hostname %>/teams/<%= @team_id %>/maps
+>>>>>>> master
 ```
 
 ###Errors
@@ -37,7 +41,11 @@ _none_
 ###Example Request
 
 ```
+<<<<<<< HEAD
 curl -H "HTTP-MIDWAY-API-KEY: <%= @api_key %>" -H "Content-Type: application/json" http://localhost:3000/teams/<%= @team_id %>/maps
+=======
+curl -H "HTTP_MIDWAY_API_KEY: <%= @api_key %>" -H "Content-Type: application/json" http://<%= @hostname %>/teams/<%= @team_id %>/maps
+>>>>>>> master
 ```
 
 ###Example Response
