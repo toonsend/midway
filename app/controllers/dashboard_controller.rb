@@ -6,6 +6,7 @@ class DashboardController < ApplicationController
 
   def api
     @api_key = current_user.get_api_key
+    @hostname = get_hostname
     if current_user.team
       @team_id = current_user.team.id
     else
@@ -24,6 +25,12 @@ class DashboardController < ApplicationController
     else
       @team = Team.new
     end
+  end
+
+  private
+
+  def get_hostname
+    IPSocket.getaddress(Socket.gethostname)
   end
 
 end
