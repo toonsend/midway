@@ -15,7 +15,7 @@ describe MapsController do
       @user = FactoryGirl.create(:user, :with_team)
       @user.generate_api_key!
       @team = @user.team
-      request.env['HTTP_MIDWAY_API_KEY'] = @user.api_key
+      request.env['HTTP-MIDWAY-API-KEY'] = @user.api_key
       @map  = FactoryGirl.create(:map, :team_id => @team.id)
     end
 
@@ -63,7 +63,7 @@ describe MapsController do
       @user = FactoryGirl.create(:user, :with_team)
       @user.generate_api_key!
       @team = @user.team
-      request.env['HTTP_MIDWAY_API_KEY'] = @user.api_key
+      request.env['HTTP-MIDWAY-API-KEY'] = @user.api_key
     end
 
     it "can get maps with valid api key" do
@@ -85,7 +85,7 @@ describe MapsController do
   describe "map uploading" do
 
     it "gets error when trying to upload map without having set a team" do
-      request.env['HTTP_MIDWAY_API_KEY'] = "WHATEVER"
+      request.env['HTTP-MIDWAY-API-KEY'] = "WHATEVER"
       post :create, {:team_id => 6, :grid => valid_grid_params}
       response.status.should == 404
       res = JSON::parse(response.body)
@@ -95,7 +95,7 @@ describe MapsController do
 
     it "gets error when trying to upload map without proper api key" do
       team = FactoryGirl.create(:team)
-      request.env['HTTP_MIDWAY_API_KEY'] = "INVALID"
+      request.env['HTTP-MIDWAY-API-KEY'] = "INVALID"
       post :create, {:team_id => team.id, :grid => valid_grid_params}
       response.status.should == 200
       res = JSON::parse(response.body)
@@ -106,7 +106,7 @@ describe MapsController do
     it "can upload map with valid api key" do
       user = FactoryGirl.create(:user, :with_team)
       user.generate_api_key!
-      request.env['HTTP_MIDWAY_API_KEY'] = user.api_key
+      request.env['HTTP-MIDWAY-API-KEY'] = user.api_key
       grid_params = JSON.parse(valid_grid_params)
       post :create, {:team_id => user.team.id, :grid => grid_params}
       response.status.should == 200
@@ -122,7 +122,7 @@ describe MapsController do
       @user = FactoryGirl.create(:user, :with_team)
       @user.generate_api_key!
       @team = @user.team
-      request.env['HTTP_MIDWAY_API_KEY'] = @user.api_key
+      request.env['HTTP-MIDWAY-API-KEY'] = @user.api_key
     end
 
     it "should return not enough ships" do

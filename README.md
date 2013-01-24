@@ -9,7 +9,7 @@
 In the http header of any request you need to include your Midway API key
 
 ```
-curl -H "HTTP_MIDWAY_API_KEY: <%= @api_key %>" http://localhost:3000/teams/<%= @team_id %>/maps
+curl -H "HTTP-MIDWAY-API-KEY: <%= @api_key %>" http://localhost:3000/teams/<%= @team_id %>/maps
 ```
 
 ###Errors
@@ -37,7 +37,7 @@ _none_
 ###Example Request
 
 ```
-curl -H "HTTP_MIDWAY_API_KEY: <%= @api_key %>" -H "Content-Type: application/json" http://localhost:3000/teams/<%= @team_id %>/maps
+curl -H "HTTP-MIDWAY-API-KEY: <%= @api_key %>" -H "Content-Type: application/json" http://localhost:3000/teams/<%= @team_id %>/maps
 ```
 
 ###Example Response
@@ -67,7 +67,7 @@ _none_
 ###Example Request
 
 ```
-curl -H "Midway-API-Key: <%= @api_key %>" -H "Content-Type: application/json" -X DELETE  http://localhost:3000/teams/1/maps/1
+curl -H "HTTP-MIDWAY-API-KEY: <%= @api_key %>" -H "Content-Type: application/json" -X DELETE  http://localhost:3000/teams/1/maps/1
 ```
 
 ###Example Response
@@ -129,7 +129,7 @@ Adds a map to your team's list.  You need to upload at least one map before you 
 ###Example Request
 
 ```
-curl -H "HTTP_MIDWAY_API_KEY: <%= @api_key %>" -H "Content-Type: application/json" -X POST -d '{"grid":[[2, 1, 5, "across"], [0, 3, 4, "down"], [2, 6, 3, "across"], [6, 4, 3, "across"], [3, 4, 2, "down"]]}' http://localhost:3000/teams/<%= @team_id %>/maps
+curl -H "HTTP-MIDWAY-API-KEY: <%= @api_key %>" -H "Content-Type: application/json" -X POST -d '{"grid":[[2, 1, 5, "across"], [0, 3, 4, "down"], [2, 6, 3, "across"], [6, 4, 3, "across"], [3, 4, 2, "down"]]}' http://localhost:3000/teams/<%= @team_id %>/maps
 ```
 
 ###Example Response
@@ -176,7 +176,7 @@ _none_
 ###Example Request
 
 ```
-curl -H "HTTP_MIDWAY_API_KEY: <%= @api_key %>" -H "Content-Type: application/json" http://localhost:3000/teams/<%= @team_id %>/game
+curl -H "HTTP-MIDWAY-API-KEY: <%= @api_key %>" -H "Content-Type: application/json" http://localhost:3000/teams/<%= @team_id %>/game
 ```
 
 ###Example Response
@@ -211,7 +211,7 @@ This plays your next move in the current game.  Games are started and ended auto
 ###Example Request
 
 ```
-curl -H "HTTP_MIDWAY_API_KEY: <%= @api_key %>" -H "Content-Type: application/json" -X POST -d '{"move":[2,1]}' http://localhost:3000/teams/<%= @team_id %>/game
+curl -H "HTTP-MIDWAY-API-KEY: <%= @api_key %>" -H "Content-Type: application/json" -X POST -d '{"move":[2,1]}' http://localhost:3000/teams/<%= @team_id %>/game
 ```
 
 ###Example Response
