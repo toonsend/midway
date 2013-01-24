@@ -21,7 +21,7 @@ describe GameController do
       it "should get a game" do
         Tournament.stub(:get_game).and_return(Game.new)
         team = FactoryGirl.create(:team)
-        request.env['HTTP_MIDWAY_API_KEY'] = @user.api_key
+        request.env['HTTP-MIDWAY-API-KEY'] = @user.api_key
         post :create, :team_id => @team.id, :move => [200, 100]
         assigns(:game).should be_an_instance_of(Game)
       end
@@ -29,7 +29,7 @@ describe GameController do
       it "should always get a game if test parameter is passed" do
         Team.stub(:get_practice_game).and_return(Game.new)
         team = FactoryGirl.create(:team)
-        request.env['HTTP_MIDWAY_API_KEY'] = @user.api_key
+        request.env['HTTP-MIDWAY-API-KEY'] = @user.api_key
         post :create, :team_id => @team.id, :move => [200, 100], :test => true
         assigns(:game).should be_an_instance_of(Game)
       end
