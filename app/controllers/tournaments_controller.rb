@@ -1,6 +1,7 @@
 class TournamentsController < ApplicationController
 
   def index
+    @team = current_user.team
     @tournaments = Tournament.all
   end
 

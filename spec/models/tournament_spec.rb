@@ -191,15 +191,6 @@ describe Tournament do
     end
   end
 
-  describe "joining a tournament" do
-
-    it "should allow a team to join the tournament"
-    it "should not allow a team to join a tournament if they are already in an tournament"
-    it "should not allow a team to join a tournament if the tournament is in_progress"
-    it "should not allow a team to join a tournament if the tournament is complete"
-
-  end
-
   it "should calculate a league table"
 
 end

@@ -37,7 +37,7 @@ describe GameController do
     end
 
     it "gets error when trying to upload map without having set a team" do
-      request.env['HTTP_MIDWAY_API_KEY'] = "WHATEVER"
+      request.env['HTTP-MIDWAY-API-KEY'] = "WHATEVER"
       post :create, {:team_id => 6, :move => [200, 100]}
       response.status.should == 404
       res = JSON::parse(response.body)
@@ -47,7 +47,7 @@ describe GameController do
 
     it "gets error when doing move with an invalid api key" do
       team = FactoryGirl.create(:team)
-      request.env['HTTP_MIDWAY_API_KEY'] = "INVALID"
+      request.env['HTTP-MIDWAY-API-KEY'] = "INVALID"
       post :create, :team_id => team.id
       response.status.should == 200
       res = JSON::parse(response.body)
@@ -65,7 +65,7 @@ describe GameController do
 
       it "should return a NO_GAME error if there's no maps to play against" do
         Tournament.stub(:get_game).and_raise(NoGameException.new)
-        request.env['HTTP_MIDWAY_API_KEY'] = @user.api_key
+        request.env['HTTP-MIDWAY-API-KEY'] = @user.api_key
         post :create, :team_id => @team.id, :move => [200, 100]
         response.status.should == 422
         res = JSON::parse(response.body)
@@ -75,7 +75,7 @@ describe GameController do
 
       it "should return an INVALID_MOVE error if an invalid move is submitted" do
         Tournament.stub(:get_game).and_return(FactoryGirl.create(:game))
-        request.env['HTTP_MIDWAY_API_KEY'] = @user.api_key
+        request.env['HTTP-MIDWAY-API-KEY'] = @user.api_key
         post :create, :team_id => @team.id, :move => [200, [100]]
         response.status.should == 422
         res = JSON::parse(response.body)
@@ -85,7 +85,7 @@ describe GameController do
 
       it "should return the move state if the move is valid" do
         Tournament.stub(:get_game).and_return(FactoryGirl.create(:game))
-        request.env['HTTP_MIDWAY_API_KEY'] = @user.api_key
+        request.env['HTTP-MIDWAY-API-KEY'] = @user.api_key
         post :create, :team_id => @team.id, :move => [0, 0]
         response.status.should == 200
         res = JSON::parse(response.body)
