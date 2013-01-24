@@ -10,6 +10,32 @@ describe GameController do
 
   describe "game moves" do
 
+    describe "test game" do
+
+      before(:each) do
+        @user = FactoryGirl.create(:user, :with_team)
+        @user.generate_api_key!
+        @team = @user.team
+      end
+
+      it "should get a game" do
+        Tournament.stub(:get_game).and_return(Game.new)
+        team = FactoryGirl.create(:team)
+        request.env['HTTP_MIDWAY_API_KEY'] = @user.api_key
+        post :create, :team_id => @team.id, :move => [200, 100]
+        assigns(:game).should be_an_instance_of(Game)
+      end
+
+      it "should always get a game if test parameter is passed" do
+        Team.stub(:get_practice_game).and_return(Game.new)
+        team = FactoryGirl.create(:team)
+        request.env['HTTP_MIDWAY_API_KEY'] = @user.api_key
+        post :create, :team_id => @team.id, :move => [200, 100], :test => true
+        assigns(:game).should be_an_instance_of(Game)
+      end
+
+    end
+
     it "gets error when trying to upload map without having set a team" do
       request.env['HTTP_MIDWAY_API_KEY'] = "WHATEVER"
       post :create, {:team_id => 6, :move => [200, 100]}
