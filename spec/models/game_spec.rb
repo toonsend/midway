@@ -237,6 +237,8 @@ describe Game do
       game.should_not == non_practice_game
     end
 
+    it "should not find a practice game when it looks to find a tournament game"
+
   end
 
 end

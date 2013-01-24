@@ -197,6 +197,7 @@ This plays your next move in the current game.  Games are started and ended auto
 ###Request Parameters
 
 * **move** A two element array with the x and y position of your move
+* **test** If you pass 'true' to this option it will start a test game, irrespective of the tournament you are in
 
 ###Return Parameters
 
