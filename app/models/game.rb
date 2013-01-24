@@ -19,7 +19,7 @@ class Game < ActiveRecord::Base
   belongs_to :map
   belongs_to :tournament
 
-  attr_accessible :moves, :state, :map, :team, :tournament, :total_moves
+  attr_accessible :moves, :state, :map, :team, :tournament, :total_moves, :practice
   serialize :moves, Array
 
   validates :team_id, :presence => true
@@ -57,6 +57,19 @@ class Game < ActiveRecord::Base
       transition :pending     => :completed
     end
 
+  end
+
+  def self.get_practice_game(team)
+    in_progress_game = in_progress_practice_game(team)
+    unless in_progress_game
+      in_progress_game = Game.create(:team => team, :map => Map.get_random_map(team), :practice => true)
+      in_progress_game.start_game!
+    end
+    in_progress_game
+  end
+
+  def self.in_progress_practice_game(team)
+    first(:conditions => ["state = ? and practice = ? and team_id = ?", 'in_progress', true, team.id])
   end
 
   def play(move)

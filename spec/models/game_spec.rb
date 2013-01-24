@@ -206,5 +206,39 @@ describe Game do
 
   end
 
+  describe "practice games" do
+
+    before(:each) do
+      @team = FactoryGirl.create(:team)
+    end
+
+    it "should make games start with practice as false" do
+      Game.new.practice.should be_false
+    end
+
+    it "should provide a new game if one does not exist" do
+      Game.get_practice_game(@team).should be_an_instance_of(Game)
+    end
+
+    it "should provide a game in progress if one does not exist" do
+      game = Game.get_practice_game(@team)
+      game.state.should == 'in_progress'
+    end
+
+    it "should provide a game in progress if one does not exist" do
+      practice_game = Game.get_practice_game(@team)
+      game = Game.get_practice_game(@team)
+      game.should == practice_game
+    end
+
+    it "should not find a tournament game" do
+      non_practice_game = FactoryGirl.create(:game)
+      game = Game.get_practice_game(@team)
+      game.should_not == non_practice_game
+    end
+
+    it "should not find a practice game when it looks to find a tournament game"
+
+  end
 
 end

@@ -15,7 +15,7 @@ class Map < ActiveRecord::Base
   belongs_to :team
   has_one :game
 
-  attr_accessible :grid, :team_id
+  attr_accessible :grid, :team, :team_id
   validates :grid, :presence => true
   validates :team_id, :presence => true
   validates_with MapValidator
@@ -24,6 +24,11 @@ class Map < ActiveRecord::Base
 
   GRID_WIDTH = 10
   GRID_HEIGHT = 10
+
+  def self.get_random_map(team)
+    grid = JSON.parse('[[0, 0, 5, "across"], [6, 2, 4, "across"], [3, 6, 3, "down"], [7, 8, 3, "across"], [4, 6, 2, "across"]]')
+    Map.create(:team => team, :grid => grid)
+  end
 
   def game_grid
     @game_grid ||= fill_game_grid

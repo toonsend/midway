@@ -4,8 +4,8 @@ class GameController < ApplicationController
   before_filter      :load_api
 
   def create
-    game = Tournament.get_game(@team)
-    success, result = game.play(params[:move])
+    @game = get_game
+    success, result = @game.play(params[:move])
     if success
       render :json => result, :status => 200
     else
@@ -15,6 +15,14 @@ class GameController < ApplicationController
     render :json => { "error_code" => 'NO_TOURNAMENT', "message" => 'Your team is not in any tournament' }, :status => 422
   rescue NoGameException => e
     render :json => { "error_code" => 'NO_GAME', "message" => 'There is currently no game to play' }, :status => 422
+  end
+
+  def get_game
+    if params[:test].blank?
+      @game = Tournament.get_game(@team)
+    else
+      @game = Game.get_practice_game(@team)
+    end
   end
 
   def error_message(error)
