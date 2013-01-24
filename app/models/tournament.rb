@@ -57,20 +57,22 @@ class Tournament < ActiveRecord::Base
   end
 
   def enter_tournament(team)
-    unless TournamentTeam.active_tournament(team).nil?
-      raise ExistingTournamentEnteredException.new
+    if team_can_join?(team)
+      self.teams << team
     end
-    if team.maps.size == 0
-      raise NoMapsUploadedException.new
-    end
-    if in_progress? || complete?
-      raise TournamentEntryClosedException.new
-    end
-    self.teams << team
   end
 
   def team_can_join?(team)
-
+    unless TournamentTeam.active_tournament(team).nil?
+      raise ExistingTournamentEnteredException.new("Team is already in a tournament")
+    end
+    if team.maps.size == 0
+      raise NoMapsUploadedException.new("A team with no maps can't enter a tournament")
+    end
+    if in_progress? || complete?
+      raise TournamentEntryClosedException.new("Tournament is closed to entries")
+    end
+    return true
   end
 
   private
@@ -108,9 +110,10 @@ class Tournament < ActiveRecord::Base
 
 end
 
-class NoTournamentException < Exception;end
-class NoGameException < Exception;end
-class ExistingTournamentEnteredException < Exception;end
-class TournamentEntryClosedException < Exception;end
-class NoMapsUploadedException < Exception;end
+class TournamentException < Exception;end
+class NoTournamentException < TournamentException;end
+class NoGameException < TournamentException;end
+class ExistingTournamentEnteredException < TournamentException;end
+class TournamentEntryClosedException < TournamentException;end
+class NoMapsUploadedException < TournamentException;end
 
