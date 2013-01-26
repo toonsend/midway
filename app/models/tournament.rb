@@ -50,7 +50,7 @@ class Tournament < ActiveRecord::Base
     raise NoTournamentException.new if tournament.nil?
     game = tournament.team_games(team).where(:state => 'in_progress').first
     unless game
-      game = tournament.games.where(:team_id => team.id, :state => 'pending').first
+      game = tournament.team_games(team).where(:state => 'pending').first
       game.start_game! if game
     end
     game.nil? ? NoGameException.new : game
@@ -66,13 +66,6 @@ class Tournament < ActiveRecord::Base
     end
   end
 
-  def leave_tournament(team)
-    if in_progress?
-      team_forfeit(team)
-    end
-    self.teams.delete(team)
-  end
-
   def team_can_join?(team)
     unless TournamentTeam.active_tournament(team).nil?
       raise ExistingTournamentEnteredException.new("Team is already in a tournament")
@@ -80,10 +73,17 @@ class Tournament < ActiveRecord::Base
     if team.maps.size == 0
       raise NoMapsUploadedException.new("A team with no maps can't enter a tournament")
     end
-    if in_progress? || complete?
+    unless open_to_entry?
       raise TournamentEntryClosedException.new("Tournament is closed to entries")
     end
     return true
+  end
+
+  def leave_tournament(team)
+    if in_progress?
+      team_forfeit(team)
+    end
+    self.teams.delete(team)
   end
 
   private
