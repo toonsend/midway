@@ -231,14 +231,6 @@ describe Game do
       game.should == practice_game
     end
 
-    it "should not find a tournament game" do
-      non_practice_game = FactoryGirl.create(:game)
-      game = Game.get_practice_game(@team)
-      game.should_not == non_practice_game
-    end
-
-    it "should not find a practice game when it looks to find a tournament game"
-
   end
 
 end
