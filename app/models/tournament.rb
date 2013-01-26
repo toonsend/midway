@@ -48,7 +48,7 @@ class Tournament < ActiveRecord::Base
   def self.get_game(team)
     tournament = TournamentTeam.in_progress_tournament(team)
     raise NoTournamentException.new if tournament.nil?
-    game = tournament.games.where(:team_id => team.id, :state => 'in_progress').first
+    game = tournament.team_games(team).where(:state => 'in_progress').first
     unless game
       game = tournament.games.where(:team_id => team.id, :state => 'pending').first
       game.start_game! if game
@@ -56,10 +56,21 @@ class Tournament < ActiveRecord::Base
     game.nil? ? NoGameException.new : game
   end
 
+  def team_games(team)
+    games.where(:team_id => team.id)
+  end
+
   def enter_tournament(team)
     if team_can_join?(team)
       self.teams << team
     end
+  end
+
+  def leave_tournament(team)
+    if in_progress?
+      team_forfeit(team)
+    end
+    self.teams.delete(team)
   end
 
   def team_can_join?(team)
@@ -104,6 +115,12 @@ class Tournament < ActiveRecord::Base
 
   def end_in_progress_games
     self.games.non_complete.each do |game|
+      game.forfeit_game!
+    end
+  end
+
+  def team_forfeit(team)
+    self.games.where(:team_id => team.id).each do |game|
       game.forfeit_game!
     end
   end

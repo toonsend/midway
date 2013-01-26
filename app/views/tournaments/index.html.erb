@@ -15,15 +15,15 @@
       </tr>
       <% @tournaments.each do |tournament| %>
         <tr>
-          <td><%= tournament.name %></td>
-          <td><%= tournament.state %></td>
+          <td><%= link_to tournament.name, tournament %></td>
+          <td><%= tournament.state.humanize %></td>
           <td><%= tournament.max_rounds %></td>
           <td><%= tournament.start_at %></td>
 					<td>
-						<% if @team %>
-					    <%= button_to "join", tournaments_teams_url(:team_id => @team, :tournament_id => tournament.id) %>
-						<% else %>
-							join
+						<% if @team && !tournament.teams.include?(@team)  %>
+							<%= button_to "join", join_tournament_url(:id => tournament.id, :team_id => @team.id) %>
+						<% elsif @team && tournament.teams.include?(@team)  %>
+							entered
 						<% end %>
 					</td>
         </tr>
@@ -35,16 +35,18 @@
       <% end %>
     </table>
     <hr />
-    <h4>Create Tournament:</h4>
-    <%= form_for [Tournament.new] do |f| %>
-      <%= f.label :name %>
-      <%= f.text_field :name %>
-      <%= f.label :max_rounds, "number of rounds" %>
-      <%= f.select :max_rounds, [1,2,3,4,5,6,7,8,9,10] %>
-      <%= f.label :start_at%>
-      <%= f.text_field :start_at, 'data-behaviour' => 'datepicker' %>
-      <br />
-      <%= f.submit "Create Tournament", {:class => "btn btn-primary"} %>
+		<% if current_user.admin? %>
+			<h4>Create Tournament:</h4>
+			<%= form_for [Tournament.new] do |f| %>
+				<%= f.label :name %>
+				<%= f.text_field :name %>
+				<%= f.label :max_rounds, "number of rounds" %>
+				<%= f.select :max_rounds, [1,2,3,4,5,6,7,8,9,10] %>
+				<%= f.label :start_at%>
+				<%= f.text_field :start_at, 'data-behaviour' => 'datepicker' %>
+				<br />
+				<%= f.submit "Create Tournament", {:class => "btn btn-primary"} %>
+			<% end %>
     <% end %>
   </div>
 </div>

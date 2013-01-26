@@ -1,12 +1,3 @@
-<h1>
-	<%= @tournament.name %>
-</h1>
-
-<h2>Teams</h2>
-<% @tournament.teams.each do |team| %>
-	<%= team.name %>
-<% end %>
-
 <% if current_user.admin? %>
 	<% if @tournament.open_to_entry? %>
 		<%= button_to "start tournament", start_tournament_url(:id => @tournament.id) %>
@@ -17,14 +8,34 @@
 	<% end %>
 <% end %>
 
-<% if @tournament.in_progress? %>
-	<%= button_to "forfeit tournament", tournaments_teams_url(:team_id => @team, :tournament_id => @tournament.id) %>
-<% else %>
+<% if !@tournament.complete? && @team && @tournament.teams.include?(@team) %>
+	<%= button_to "forfeit tournament", forfeit_tournament_url(:id => @tournament.id, :team_id => @team.id) %>
 <% end %>
 
-<h2><%= @tournament.state %></h2>
+<h1>
+	<%= @tournament.name %>
+</h1>
 
-<h2>Games</h2>
-<% @tournament.games.each do |game| %>
-	<%= game.map.id %>
+<% @tournament.teams.each do |team| %>
+
+	<h3><%= team.name %></h3>
+	<br />
+	<table class='table'>
+		<tr>
+			<th>Game Id</th>
+			<th>State</th>
+			<th>Moves</th>
+		</tr>
+	  <% @tournament.team_games(team).each do |game| %>
+			<tr>
+				<th><%= game.id %></th>
+				<th><%= game.state.humanize %></th>
+				<th><%= game.moves.size %></th>
+			</tr>
+	  <% end %>
+
+  </table>
 <% end %>
+
+
+

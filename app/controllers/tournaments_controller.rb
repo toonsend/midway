@@ -1,8 +1,14 @@
 class TournamentsController < ApplicationController
 
+  before_filter :check_admin?, :except => [:index, :show, :join_tournament]
+  before_filter :get_team
+
   def index
-    @team = current_user.team
     @tournaments = Tournament.all
+  end
+
+  def show
+    @tournament = Tournament.find(params[:id])
   end
 
   def create
@@ -13,7 +19,43 @@ class TournamentsController < ApplicationController
       flash[:error] = tournament.errors.map {|key, message| "#{key.to_s.humanize} #{message}" }
       redirect_to :action => :index
     end
+  end
 
+  def forfeit_tournament
+    tournament = Tournament.find(params[:id])
+    tournament.leave_tournament(@team)
+    flash[:error] = "Team removed from tournament #{@team.name}"
+    redirect_to :action => :index
+  end
+
+  def join_tournament
+    tournament = Tournament.find(params[:id])
+    tournament.enter_tournament(@team)
+    if tournament.save
+      flash[:info] = "Team added to tournament #{@team.name}"
+    else
+      flash[:error] = "Team not added to tournament #{@team.name}"
+    end
+  rescue Exception => e
+    flash[:error] = e.message
+  ensure
+    redirect_to :action => :index
+  end
+
+  def start_tournament
+    @tournament = Tournament.find(params[:id])
+    @tournament.start_tournament!
+    redirect_to :action => :index
+  end
+
+  def end_tournament
+    @tournament = Tournament.find(params[:id])
+    @tournament.end_tournament!
+    redirect_to :action => :index
+  end
+
+  def get_team
+    @team = current_user.team
   end
 
 end

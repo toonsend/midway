@@ -55,6 +55,7 @@ class Game < ActiveRecord::Base
     event :forfeit_game do
       transition :in_progress => :completed
       transition :pending     => :completed
+      transition :completed   => :completed
     end
 
   end
