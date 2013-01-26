@@ -16,5 +16,12 @@ class ApplicationController < ActionController::Base
       render :json => { "error_code" => "TEAM_NOT_FOUND", "message" => "Team not found" }, :status => 404 and return
     end
   end
+
+  def check_admin?
+    unless current_user.admin?
+      render  :text => "You do not have permission to perform this action"
+    end
+  end
+
 end
 
