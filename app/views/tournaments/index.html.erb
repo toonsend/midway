@@ -6,12 +6,13 @@
         <%= flash[:error] %>
       </div>
     <% end %>
-    <table class='table'>
+    <table class='table table-striped'>
       <tr>
         <th>Name</th>
         <th>State</th>
         <th>Rounds</th>
         <th>Start Date</th>
+				<th></th>
       </tr>
       <% @tournaments.each do |tournament| %>
         <tr>
@@ -34,7 +35,7 @@
         </tr>
       <% end %>
     </table>
-    <hr />
+
 		<% if current_user.admin? %>
 			<h4>Create Tournament:</h4>
 			<%= form_for [Tournament.new] do |f| %>

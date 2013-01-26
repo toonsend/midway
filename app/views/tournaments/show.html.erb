@@ -16,11 +16,29 @@
 	<%= @tournament.name %>
 </h1>
 
+
+<table class='table table-striped'>
+	<tr>
+		<th>Team</th>
+		<th>Games Played</th>
+		<th>Total Moves</th>
+		<th>Average Moves Per Game</th>
+	</tr>
+	<% LeagueTable.new(@tournament).each do |league_team| %>
+		<tr>
+			<td><%= league_team.name %></td>
+			<td><%= league_team.games_played %></td>
+			<td><%= league_team.total_moves %></td>
+			<td><%= league_team.avg_moves_per_game %></td>
+		</tr>
+	<% end %>
+</table>
+
 <% @tournament.teams.each do |team| %>
 
 	<h3><%= team.name %></h3>
 	<br />
-	<table class='table'>
+	<table class='table table-striped'>
 		<tr>
 			<th>Game Id</th>
 			<th>State</th>
@@ -28,9 +46,9 @@
 		</tr>
 	  <% @tournament.team_games(team).each do |game| %>
 			<tr>
-				<th><%= game.id %></th>
-				<th><%= game.state.humanize %></th>
-				<th><%= game.moves.size %></th>
+				<td><%= game.id %></td>
+				<td><%= game.state.humanize %></td>
+				<td><%= game.total_moves %></td>
 			</tr>
 	  <% end %>
 
