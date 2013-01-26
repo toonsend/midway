@@ -1,0 +1,30 @@
+<h1>
+	<%= @tournament.name %>
+</h1>
+
+<h2>Teams</h2>
+<% @tournament.teams.each do |team| %>
+	<%= team.name %>
+<% end %>
+
+<% if current_user.admin? %>
+	<% if @tournament.open_to_entry? %>
+		<%= button_to "start tournament", start_tournament_url(:id => @tournament.id) %>
+	<% end %>
+
+	<% if @tournament.in_progress? %>
+		<%= button_to "end tournament", end_tournament_url(:id => @tournament.id) %>
+	<% end %>
+<% end %>
+
+<% if @tournament.in_progress? %>
+	<%= button_to "forfeit tournament", tournaments_teams_url(:team_id => @team, :tournament_id => @tournament.id) %>
+<% else %>
+<% end %>
+
+<h2><%= @tournament.state %></h2>
+
+<h2>Games</h2>
+<% @tournament.games.each do |game| %>
+	<%= game.map.id %>
+<% end %>
