@@ -17,6 +17,8 @@ class GameController < ApplicationController
     render :json => { "error_code" => 'NO_GAME', "message" => 'There is currently no game to play' }, :status => 422
   end
 
+  private
+
   def get_game
     if params[:test].blank?
       @game = Tournament.get_game(@team)
