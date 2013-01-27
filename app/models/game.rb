@@ -80,6 +80,13 @@ class Game < ActiveRecord::Base
     return [false, {:error_code => "INVALID_MOVE"}]
   end
 
+  def status
+    status, result = fire(ship_mappings, self.map.empty_game_grid, moves.clone)
+    result.delete('move')
+    result.delete('status')
+    result
+  end
+
   private
 
   def save_move(move)

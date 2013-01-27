@@ -18,4 +18,6 @@ Midway::Application.routes.draw do
   match "/tournaments/:id/end"              => "tournaments#end_tournament",     :as => :end_tournament
   match "/tournaments/:id/join/:team_id"    => "tournaments#join_tournament",    :as => :join_tournament
   match "/tournaments/:id/forfeit/:team_id" => "tournaments#forfeit_tournament", :as => :forfeit_tournament
+
+  match "/teams/:team_id/game"              => "game#current_game"
 end

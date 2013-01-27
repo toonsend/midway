@@ -17,6 +17,15 @@ class GameController < ApplicationController
     render :json => { "error_code" => 'NO_GAME', "message" => 'There is currently no game to play' }, :status => 422
   end
 
+  def current_game
+    @game = get_game
+    render :json => @game.status, :status => 200
+  rescue NoTournamentException => e
+    render :json => { "error_code" => 'NO_TOURNAMENT', "message" => 'Your team is not in any tournament' }, :status => 422
+  rescue NoGameException => e
+    render :json => { "error_code" => 'NO_GAME', "message" => 'There is currently no game to play' }, :status => 422
+  end
+
   private
 
   def get_game
