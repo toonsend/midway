@@ -67,7 +67,7 @@ _none_
 ###Example Request
 
 ```
-curl -H "HTTP-MIDWAY-API-KEY: <%= @api_key %>" -H "Content-Type: application/json" -X DELETE  http://<%= @hostname %>/teams/<%= @team_id %l/maps/1
+curl -H "HTTP-MIDWAY-API-KEY: <%= @api_key %>" -H "Content-Type: application/json" -X DELETE  http://<%= @hostname %>/teams/<%= @team_id %>/maps/1
 ```
 
 ###Example Response
@@ -173,6 +173,14 @@ This returns the state of the current game
 
 _none_
 
+###Return Parameters
+
+* **game_id** The id of the current game
+* **grid**  The current grid with 'x' marking any hit position
+* **opponent_id** Your opponents team id
+* **game_status** Game status can be 'playing', 'ended'
+* **moves** Current move count
+
 ###Example Request
 
 ```
@@ -183,8 +191,11 @@ curl -H "HTTP-MIDWAY-API-KEY: <%= @api_key %>" -H "Content-Type: application/jso
 
 ```
 {
-  "game_id": "2",
+  "game_id":6,
   "grid": ["oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxo"]
+  "opponent_id":4,
+  "game_status":"in_progress",
+  "moves":27
 }
 ```
 
