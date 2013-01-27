@@ -74,15 +74,20 @@ class Game < ActiveRecord::Base
   end
 
   def play(move)
-    x,y = move
-    self.moves << [Integer(x), Integer(y)]
-    self.save
+    save_move(move)
     fire(ship_mappings, self.map.empty_game_grid, moves.clone)
   rescue
     return [false, {:error_code => "INVALID_MOVE"}]
   end
 
   private
+
+  def save_move(move)
+    x,y = move
+    self.moves << [Integer(x), Integer(y)]
+    self.total_moves = self.moves.size
+    self.save
+  end
 
   def set_total_moves_to_maximum
     self.update_attribute(:total_moves, Map::GRID_WIDTH * Map::GRID_HEIGHT)
@@ -126,7 +131,7 @@ class Game < ActiveRecord::Base
   def update_shot_grid_with_miss(shot_grid, shot)
     if shot_grid[shot[0]][shot[1]] !=  MAP_HIT_SYMBOL
       shot_grid[shot[0]][shot[1]] = MAP_MISS_SYMBOL
-    end
+   end
   end
 
   def check_for_end_of_game(ships)
@@ -147,7 +152,7 @@ class Game < ActiveRecord::Base
     end
   end
 
-  def move_state(shot,shot_grid)
+ def move_state(shot,shot_grid)
     {
       "game_id"     => self.id,
       "grid"        => shot_grid,

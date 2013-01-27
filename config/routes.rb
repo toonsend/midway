@@ -2,8 +2,8 @@ Midway::Application.routes.draw do
   devise_for :users
 
   resources :teams do
-    resources :game
-    resources :maps
+    resources :game, :only => :create
+    resources :maps, :only => [:index, :create, :destroy]
     resources :invites, :except => :update
   end
 
