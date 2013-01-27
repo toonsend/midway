@@ -37,9 +37,11 @@
           <h4>Latest Tournament</h4>
           <p>
             <ol>
+            <% unless Tournament.last.nil? %>
               <% LeagueTable.new(Tournament.last).each do |league_team| %>
                 <li><%= "#{league_team.name} (avg #{league_team.avg_moves_per_game})" %></li>
               <% end %>
+            <% end %>
             </ol>
           </p>
 
