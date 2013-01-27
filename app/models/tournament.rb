@@ -48,15 +48,20 @@ class Tournament < ActiveRecord::Base
   def self.get_game(team)
     tournament = TournamentTeam.in_progress_tournament(team)
     raise NoTournamentException.new if tournament.nil?
-    game = tournament.team_games(team).where(:state => 'in_progress').first
-    unless game
-      game = tournament.team_games(team).where(:state => 'pending').first
-      game.start_game! if game
-    end
-    game.nil? ? NoGameException.new : game
+    game = tournament.get_current_game(team)
+    game.nil? ? raise(NoGameException.new) : game
   end
 
-  def team_games(team)
+  def get_current_game(team)
+    game = self.games_for(team).where(:state => 'in_progress').first
+    unless game
+      game = self.games_for(team).where(:state => 'pending').first
+      game.start_game! if game
+    end
+    game
+  end
+
+  def games_for(team)
     games.where(:team_id => team.id)
   end
 

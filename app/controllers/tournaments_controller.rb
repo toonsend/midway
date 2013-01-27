@@ -39,19 +39,19 @@ class TournamentsController < ApplicationController
   rescue Exception => e
     flash[:error] = e.message
   ensure
-    redirect_to :action => :index
+    redirect_to @tournament
   end
 
   def start_tournament
     @tournament = Tournament.find(params[:id])
     @tournament.start_tournament!
-    redirect_to :action => :index
+    redirect_to @tournament
   end
 
   def end_tournament
     @tournament = Tournament.find(params[:id])
     @tournament.end_tournament!
-    redirect_to :action => :index
+    redirect_to @tournament
   end
 
   def get_team

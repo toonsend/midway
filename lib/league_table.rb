@@ -23,7 +23,7 @@ class LeagueTable
 
   def team_league_entry(team)
     league_team = LeagueTeam.new(team)
-    total_moves = tournament.team_games(team).each do |game|
+    total_moves = tournament.games_for(team).each do |game|
       league_team.total_moves  += game.total_moves
       league_team.games_played += 1 if game.completed?
     end

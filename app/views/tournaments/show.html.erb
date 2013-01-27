@@ -44,7 +44,7 @@
 			<th>State</th>
 			<th>Moves</th>
 		</tr>
-	  <% @tournament.team_games(team).each do |game| %>
+	  <% @tournament.games_for(team).each do |game| %>
 			<tr>
 				<td><%= game.id %></td>
 				<td><%= game.state.humanize %></td>

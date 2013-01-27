@@ -210,6 +210,4 @@ describe Tournament do
     Tournament.get_game(team).should_not == practice_game
   end
 
-  it "should calculate a league table"
-
 end
