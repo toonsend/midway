@@ -39,7 +39,7 @@ class TournamentsController < ApplicationController
   rescue Exception => e
     flash[:error] = e.message
   ensure
-    redirect_to @tournament
+    redirect_to tournament
   end
 
   def start_tournament

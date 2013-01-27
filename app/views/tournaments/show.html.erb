@@ -1,3 +1,8 @@
+<% if flash[:error] %>
+  <div class="alert alert-error">
+    <%= flash[:error] %>
+  </div>
+<% end %>
 <% if current_user.admin? %>
 	<% if @tournament.open_to_entry? %>
 		<%= button_to "start tournament", start_tournament_url(:id => @tournament.id) %>
