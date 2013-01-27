@@ -48,12 +48,21 @@ class Tournament < ActiveRecord::Base
   def self.get_game(team)
     tournament = TournamentTeam.in_progress_tournament(team)
     raise NoTournamentException.new if tournament.nil?
-    game = tournament.games.where(:team_id => team.id, :state => 'in_progress').first
+    game = tournament.get_current_game(team)
+    game.nil? ? raise(NoGameException.new) : game
+  end
+
+  def get_current_game(team)
+    game = self.games_for(team).where(:state => 'in_progress').first
     unless game
-      game = tournament.games.where(:team_id => team.id, :state => 'pending').first
+      game = self.games_for(team).where(:state => 'pending').first
       game.start_game! if game
     end
-    game.nil? ? NoGameException.new : game
+    game
+  end
+
+  def games_for(team)
+    games.where(:team_id => team.id)
   end
 
   def enter_tournament(team)
@@ -69,10 +78,17 @@ class Tournament < ActiveRecord::Base
     if team.maps.size == 0
       raise NoMapsUploadedException.new("A team with no maps can't enter a tournament")
     end
-    if in_progress? || complete?
+    unless open_to_entry?
       raise TournamentEntryClosedException.new("Tournament is closed to entries")
     end
     return true
+  end
+
+  def leave_tournament(team)
+    if in_progress?
+      team_forfeit(team)
+    end
+    self.teams.delete(team)
   end
 
   private
@@ -104,6 +120,12 @@ class Tournament < ActiveRecord::Base
 
   def end_in_progress_games
     self.games.non_complete.each do |game|
+      game.forfeit_game!
+    end
+  end
+
+  def team_forfeit(team)
+    self.games.where(:team_id => team.id).each do |game|
       game.forfeit_game!
     end
   end

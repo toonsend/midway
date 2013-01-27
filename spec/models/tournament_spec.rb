@@ -191,6 +191,23 @@ describe Tournament do
     end
   end
 
-  it "should calculate a league table"
+  it "should not contain a practice game in list tournament games" do
+    practice_game = FactoryGirl.create(:game, :practice => true)
+    tournament    = FactoryGirl.create(:tournament)
+    tournament.enter_tournament(valid_team)
+    tournament.enter_tournament(valid_team)
+    tournament.start_tournament!
+    tournament.games.should_not include(practice_game)
+  end
+
+  it "should not find a practice game" do
+    team          = FactoryGirl.create(:team)
+    practice_game = Game.get_practice_game(team)
+    tournament    = FactoryGirl.create(:tournament)
+    tournament.enter_tournament(team)
+    tournament.enter_tournament(valid_team)
+    tournament.start_tournament!
+    Tournament.get_game(team).should_not == practice_game
+  end
 
 end

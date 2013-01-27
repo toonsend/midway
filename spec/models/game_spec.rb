@@ -189,9 +189,9 @@ describe Game do
 
       it "should fill in the grid correctly when sent duplicate moves" do
         success, result = @game.play([0,0])
-        result['grid'][0][0].should == 'H'
+        result['grid'][0][0].should == 'x'
         success, result = @game.play([0,0])
-        result['grid'][0][0].should == 'H'
+        result['grid'][0][0].should == 'x'
       end
 
 
@@ -230,14 +230,6 @@ describe Game do
       game = Game.get_practice_game(@team)
       game.should == practice_game
     end
-
-    it "should not find a tournament game" do
-      non_practice_game = FactoryGirl.create(:game)
-      game = Game.get_practice_game(@team)
-      game.should_not == non_practice_game
-    end
-
-    it "should not find a practice game when it looks to find a tournament game"
 
   end
 

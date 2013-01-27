@@ -28,7 +28,7 @@ describe MapsController do
     it "should delete a map" do
       lambda {
         delete :destroy, :team_id => @team.id, :id => @map.id
-      }.should change(Map, :count).by(-1)
+      }.should change(@team.maps, :count).by(-1)
     end
 
     it "should only delete that team's map" do

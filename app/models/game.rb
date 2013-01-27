@@ -32,8 +32,8 @@ class Game < ActiveRecord::Base
   MISS_MESSAGE              = 'miss'
   HIT_AND_DESTROYED_MESSAGE = 'hit and destroyed'
 
-  MAP_HIT_SYMBOL  = 'H'
-  MAP_MISS_SYMBOL = 'M'
+  MAP_HIT_SYMBOL  = 'x'
+  MAP_MISS_SYMBOL = 'm'
 
   state_machine :state, :initial => :pending do
 
@@ -55,6 +55,7 @@ class Game < ActiveRecord::Base
     event :forfeit_game do
       transition :in_progress => :completed
       transition :pending     => :completed
+      transition :completed   => :completed
     end
 
   end
@@ -73,15 +74,27 @@ class Game < ActiveRecord::Base
   end
 
   def play(move)
-    x,y = move
-    self.moves << [Integer(x), Integer(y)]
-    self.save
+    save_move(move)
     fire(ship_mappings, self.map.empty_game_grid, moves.clone)
   rescue
     return [false, {:error_code => "INVALID_MOVE"}]
   end
 
+  def status
+    status, result = fire(ship_mappings, self.map.empty_game_grid, moves.clone)
+    result.delete('move')
+    result.delete('status')
+    result
+  end
+
   private
+
+  def save_move(move)
+    x,y = move
+    self.moves << [Integer(x), Integer(y)]
+    self.total_moves = self.moves.size
+    self.save
+  end
 
   def set_total_moves_to_maximum
     self.update_attribute(:total_moves, Map::GRID_WIDTH * Map::GRID_HEIGHT)
@@ -125,7 +138,7 @@ class Game < ActiveRecord::Base
   def update_shot_grid_with_miss(shot_grid, shot)
     if shot_grid[shot[0]][shot[1]] !=  MAP_HIT_SYMBOL
       shot_grid[shot[0]][shot[1]] = MAP_MISS_SYMBOL
-    end
+   end
   end
 
   def check_for_end_of_game(ships)
@@ -149,7 +162,7 @@ class Game < ActiveRecord::Base
   def move_state(shot,shot_grid)
     {
       "game_id"     => self.id,
-      "grid"        => shot_grid,
+      "grid"        => compress_shot_grid(shot_grid),
       "opponent_id" => self.map.team.id,
       "status"      => shot,
       "move"        => moves.last,
@@ -157,4 +170,11 @@ class Game < ActiveRecord::Base
       "moves"       => moves.size
     }
   end
+
+  def compress_shot_grid(shot_grid)
+    shot_grid.map do |grid_line|
+      grid_line.join
+    end
+  end
+
 end

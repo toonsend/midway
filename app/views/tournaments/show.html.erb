@@ -1,0 +1,59 @@
+<% if current_user.admin? %>
+	<% if @tournament.open_to_entry? %>
+		<%= button_to "start tournament", start_tournament_url(:id => @tournament.id) %>
+	<% end %>
+
+	<% if @tournament.in_progress? %>
+		<%= button_to "end tournament", end_tournament_url(:id => @tournament.id) %>
+	<% end %>
+<% end %>
+
+<% if !@tournament.complete? && @team && @tournament.teams.include?(@team) %>
+	<%= button_to "forfeit tournament", forfeit_tournament_url(:id => @tournament.id, :team_id => @team.id) %>
+<% end %>
+
+<h1>
+	<%= @tournament.name %>
+</h1>
+
+
+<table class='table table-striped'>
+	<tr>
+		<th>Team</th>
+		<th>Games Played</th>
+		<th>Total Moves</th>
+		<th>Average Moves Per Game</th>
+	</tr>
+	<% LeagueTable.new(@tournament).each do |league_team| %>
+		<tr>
+			<td><%= league_team.name %></td>
+			<td><%= league_team.games_played %></td>
+			<td><%= league_team.total_moves %></td>
+			<td><%= league_team.avg_moves_per_game %></td>
+		</tr>
+	<% end %>
+</table>
+
+<% @tournament.teams.each do |team| %>
+
+	<h3><%= team.name %></h3>
+	<br />
+	<table class='table table-striped'>
+		<tr>
+			<th>Game Id</th>
+			<th>State</th>
+			<th>Moves</th>
+		</tr>
+	  <% @tournament.games_for(team).each do |game| %>
+			<tr>
+				<td><%= game.id %></td>
+				<td><%= game.state.humanize %></td>
+				<td><%= game.total_moves %></td>
+			</tr>
+	  <% end %>
+
+  </table>
+<% end %>
+
+
+

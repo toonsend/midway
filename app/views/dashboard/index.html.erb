@@ -5,6 +5,14 @@
           Implement your solution and play with others!
         </p>
         <%= link_to "View Api docs now!", api_path, :class => "btn btn-large btn-success" %>
+        <br />
+        <br />
+        <br />
+        Check us out at
+        <a href='http://github.com/mitadmin/midway'>github</a>
+        <br />
+        Travis Build Status :
+        <a href='http://travis-ci.org/mitadmin/midway'><img src='https://secure.travis-ci.org/mitadmin/midway.png?branch=master'/></a>
       </div>
 
       <hr>
@@ -16,7 +24,7 @@
 
           <h4>Testing Api:</h4>
           <p>
-            You can test your app against test map! 
+            You can test your app against test map!
           </p>
 
           <h4>Team!</h4>
@@ -26,20 +34,20 @@
         </div>
 
         <div class="span6">
-          <h4>Top 5 teams:</h4>
+          <h4>Latest Tournament</h4>
           <p>
             <ol>
-              <li>Children of the Toonz (avg 34)</li>
-              <li>"Gateway Trespassers" (avg 38)</li>
-              <li>"7th floor forever not alone" (avg 34)</li> 
-              <li>"G33ky Girly Girls!" (avg 69)</li>
+              <% LeagueTable.new(Tournament.last).each do |league_team| %>
+                <li><%= "#{league_team.name} (avg #{league_team.avg_moves_per_game})" %></li>
+              <% end %>
             </ol>
           </p>
 
           <h4>Events</h4>
-          <p>
-            13 01 2011 - "Auror" 1.1 Update, we will have scheduled downtime between 12:00 and 13:30 (UTC) to upgrade game server.
-          </p>
-
+          <% Tournament.all.each do |tournament| %>
+            <p>
+              <%= "#{tournament.name} starting at #{tournament.start_at}" %>
+            </p>
+          <% end %>
         </div>
       </div>

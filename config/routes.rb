@@ -2,12 +2,11 @@ Midway::Application.routes.draw do
   devise_for :users
 
   resources :teams do
-    resources :game
-    resources :maps
+    resources :game, :only => :create
+    resources :maps, :only => [:index, :create, :destroy]
     resources :invites, :except => :update
   end
 
-  resources :tournaments_teams
   resources :invites, :only => :update
   resources :tournaments
 
@@ -15,4 +14,10 @@ Midway::Application.routes.draw do
   match "/api" => "dashboard#api",         :as => :api
   match "/key" => "dashboard#key",         :as => :key
 
+  match "/tournaments/:id/start"            => "tournaments#start_tournament",   :as => :start_tournament
+  match "/tournaments/:id/end"              => "tournaments#end_tournament",     :as => :end_tournament
+  match "/tournaments/:id/join/:team_id"    => "tournaments#join_tournament",    :as => :join_tournament
+  match "/tournaments/:id/forfeit/:team_id" => "tournaments#forfeit_tournament", :as => :forfeit_tournament
+
+  match "/teams/:team_id/game"              => "game#current_game"
 end
