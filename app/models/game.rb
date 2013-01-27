@@ -32,8 +32,8 @@ class Game < ActiveRecord::Base
   MISS_MESSAGE              = 'miss'
   HIT_AND_DESTROYED_MESSAGE = 'hit and destroyed'
 
-  MAP_HIT_SYMBOL  = 'H'
-  MAP_MISS_SYMBOL = 'M'
+  MAP_HIT_SYMBOL  = 'x'
+  MAP_MISS_SYMBOL = 'm'
 
   state_machine :state, :initial => :pending do
 
@@ -159,10 +159,10 @@ class Game < ActiveRecord::Base
     end
   end
 
- def move_state(shot,shot_grid)
+  def move_state(shot,shot_grid)
     {
       "game_id"     => self.id,
-      "grid"        => shot_grid,
+      "grid"        => compress_shot_grid(shot_grid),
       "opponent_id" => self.map.team.id,
       "status"      => shot,
       "move"        => moves.last,
@@ -170,4 +170,11 @@ class Game < ActiveRecord::Base
       "moves"       => moves.size
     }
   end
+
+  def compress_shot_grid(shot_grid)
+    shot_grid.map do |grid_line|
+      grid_line.join
+    end
+  end
+
 end

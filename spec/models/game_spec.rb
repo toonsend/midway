@@ -189,9 +189,9 @@ describe Game do
 
       it "should fill in the grid correctly when sent duplicate moves" do
         success, result = @game.play([0,0])
-        result['grid'][0][0].should == 'H'
+        result['grid'][0][0].should == 'x'
         success, result = @game.play([0,0])
-        result['grid'][0][0].should == 'H'
+        result['grid'][0][0].should == 'x'
       end
 
 

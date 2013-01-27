@@ -192,7 +192,7 @@ curl -H "HTTP-MIDWAY-API-KEY: <%= @api_key %>" -H "Content-Type: application/jso
 ```
 {
   "game_id":6,
-  "grid": ["oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxo"]
+  "grid": ["ox***xoxox","ox*****xox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxox","oxoxoxoxo"]
   "opponent_id":4,
   "game_status":"in_progress",
   "moves":27
