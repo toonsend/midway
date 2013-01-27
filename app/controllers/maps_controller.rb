@@ -23,7 +23,7 @@ class MapsController < ApplicationController
   def destroy
     map = Map.first(:conditions => {:id => params[:id], :team_id => params[:team_id]})
     if map
-      map.destroy
+      map.update_attribute(:deleted, true)
       render :json => {'id' => map.id}, :status => 200
     else
       render :json => {'error_code' => 'MAP_NOT_FOUND', 'message' => "Map #{params[:id]} not found."}, :status => 404

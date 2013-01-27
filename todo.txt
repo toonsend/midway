@@ -19,7 +19,7 @@ Toons/Jakub/Ben
 # End tournament functionality
 # Moves Tournament League table
 # change underscores in API key to dashes
+# Add deleted field to map
 
-Add deleted field to map
 Best Maps Tournament League table
 add nginx start and stop scripts

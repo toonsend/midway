@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130126170719) do
+ActiveRecord::Schema.define(:version => 20130127165117) do
 
   create_table "games", :force => true do |t|
     t.text     "moves"
@@ -36,8 +36,9 @@ ActiveRecord::Schema.define(:version => 20130126170719) do
   create_table "maps", :force => true do |t|
     t.text     "grid"
     t.integer  "team_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+    t.boolean  "deleted",    :default => false
   end
 
   create_table "teams", :force => true do |t|

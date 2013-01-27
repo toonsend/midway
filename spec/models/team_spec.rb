@@ -62,5 +62,17 @@ describe Team do
       invitees.size.should == 3
     end
 
+    it "should not use deleted maps" do
+      team = FactoryGirl.create(:team)
+      map = FactoryGirl.create(:map, :team => team, :deleted => true)
+      team.maps.should be_empty
+    end
+
+    it "should list maps that have deleted false" do
+      team = FactoryGirl.create(:team)
+      map = FactoryGirl.create(:map, :team => team)
+      team.maps.should == [map]
+    end
+
   end
 end

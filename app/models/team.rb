@@ -14,7 +14,7 @@ class Team < ActiveRecord::Base
   attr_accessible :name
 
   has_many   :users
-  has_many   :maps
+  has_many   :maps, :conditions => { :deleted => false }
   has_many   :invites, :foreign_key => "inviter"
   has_many   :pending_invites, :class_name => "Invite", :foreign_key => "inviter", :conditions => "state = 'pending'"
   validates :name, :presence => true
