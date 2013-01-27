@@ -30,7 +30,7 @@ class DashboardController < ApplicationController
   private
 
   def get_hostname
-    IPSocket.getaddress(Socket.gethostname)
+    request.raw_host_with_port
   end
 
 end
