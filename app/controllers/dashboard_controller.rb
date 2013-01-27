@@ -14,7 +14,7 @@ class DashboardController < ApplicationController
     end
     readme   = File.open('README.md')
     template = ERB.new(readme.read).result(binding)
-    options  = [:hard_wrap, :filter_html, :autolink, :no_intraemphasis, :fenced_code, :gh_blockcode]
+    options  = [:hard_wrap, :autolink, :no_intraemphasis, :fenced_code, :gh_blockcode]
     @rc      = Redcarpet.new(template, *options).to_html
   end
 
