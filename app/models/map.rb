@@ -26,7 +26,7 @@ class Map < ActiveRecord::Base
   GRID_HEIGHT = 10
 
   def self.get_random_map(team)
-    grid = JSON.parse('[[0, 0, 5, "across"], [6, 2, 4, "across"], [3, 6, 3, "down"], [7, 8, 3, "across"], [4, 6, 2, "across"]]')
+    _, grid = Board.random_board
     Map.create(:team => team, :grid => grid)
   end
 
