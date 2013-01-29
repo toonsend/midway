@@ -1,55 +1,24 @@
       <div class="jumbotron">
         <h1>Welcome to Midway!</h1>
+        <blockquote>
+          <p>
+            Three of their first-line carriers, Admiral. Isn't that worth at least a "hot diggity damn"?
+          </p>
+        </blockquote>
+        <%= image_tag('midway.jpg') %>
+        <br />
+        <br />
         <p class="lead">
-          Your Ui for Battleship! Get your Api key!
-          Implement your solution and play with others!
+          Develop your solution in any language
+          <br />
+          Simple HTTP request API
+          <br />
+          Test your bots against random test maps
+          <br />
+          Enter tournaments and battle others
         </p>
+        <br />
         <%= link_to "View Api docs now!", api_path, :class => "btn btn-large btn-success" %>
-        <br />
-        <br />
-        <br />
-        Check us out at
-        <a href='http://github.com/mitadmin/midway'>github</a>
-        <br />
-        Travis Build Status :
-        <a href='http://travis-ci.org/mitadmin/midway'><img src='https://secure.travis-ci.org/mitadmin/midway.png?branch=master'/></a>
+
       </div>
 
-      <hr>
-
-      <div class="row-fluid marketing">
-        <div class="span6">
-          <h4>Languages:</h4>
-          <p>You can any language you want to develop your solution! All you need to do is HTTP requests</p>
-
-          <h4>Testing Api:</h4>
-          <p>
-            You can test your app against test map!
-          </p>
-
-          <h4>Team!</h4>
-          <p>
-            Be sure to team up with other people to make better algorithms!
-          </p>
-        </div>
-
-        <div class="span6">
-          <h4>Latest Tournament</h4>
-          <p>
-            <ol>
-            <% unless Tournament.last.nil? %>
-              <% LeagueTable.new(Tournament.last).each do |league_team| %>
-                <li><%= "#{league_team.name} (avg #{league_team.avg_moves_per_game})" %></li>
-              <% end %>
-            <% end %>
-            </ol>
-          </p>
-
-          <h4>Events</h4>
-          <% Tournament.all.each do |tournament| %>
-            <p>
-              <%= "#{tournament.name} starting at #{tournament.start_at}" %>
-            </p>
-          <% end %>
-        </div>
-      </div>
