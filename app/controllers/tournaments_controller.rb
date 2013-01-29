@@ -33,13 +33,14 @@ class TournamentsController < ApplicationController
     tournament.enter_tournament(@team)
     if tournament.save
       flash[:info] = "Team added to tournament #{@team.name}"
+      redirect_to tournament
     else
       flash[:error] = "Team not added to tournament #{@team.name}"
+      redirect_to :action => :index
     end
   rescue Exception => e
     flash[:error] = e.message
-  ensure
-    redirect_to tournament
+    redirect_to :action => :index
   end
 
   def start_tournament
