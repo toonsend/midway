@@ -39,6 +39,13 @@ describe Game do
       game.errors[:moves].should == ["INVALID_MOVE"]
     end
 
+    it "should have an opponent" do
+      team = FactoryGirl.create(:team)
+      map  = FactoryGirl.create(:map, :team => team)
+      game = FactoryGirl.build(:game, :map => map)
+      game.opponent.should == team
+    end
+
   end
 
   describe "states" do

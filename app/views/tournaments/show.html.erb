@@ -52,6 +52,7 @@
 	  <% @tournament.games_for(team).each do |game| %>
 			<tr>
 				<td><%= game.id %></td>
+				<td><%= game.opponent.name %></td>
 				<td><%= game.state.humanize %></td>
 				<td><%= game.total_moves %></td>
 			</tr>

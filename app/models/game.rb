@@ -87,6 +87,10 @@ class Game < ActiveRecord::Base
     result
   end
 
+  def opponent
+    self.map.team
+  end
+
   private
 
   def save_move(move)
