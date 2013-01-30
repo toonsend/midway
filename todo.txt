@@ -23,3 +23,9 @@ Toons/Jakub/Ben
 
 Best Maps Tournament League table
 add nginx start and stop scripts
+test parameter needs to only work with true
+you can join a completed tournament
+you can forfeit a completed tournament
+check that you play the same tournaments
+add team name to tournament game gui
+add map id to tournament game gui
