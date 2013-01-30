@@ -11,6 +11,7 @@
         <th>Name</th>
         <th>State</th>
         <th>Rounds</th>
+				<th>Number of Teams</th>
         <th>Start Date</th>
 				<th></th>
       </tr>
@@ -19,6 +20,7 @@
           <td><%= link_to tournament.name, tournament %></td>
           <td><%= tournament.state.humanize %></td>
           <td><%= tournament.max_rounds %></td>
+          <td><%= tournament.teams.size %></td>
           <td><%= tournament.start_at %></td>
 					<td>
 						<% if @team && !tournament.teams.include?(@team)  %>
