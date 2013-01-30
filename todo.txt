@@ -20,12 +20,11 @@ Toons/Jakub/Ben
 # Moves Tournament League table
 # change underscores in API key to dashes
 # Add deleted field to map
+# you can forfeit a completed tournament
+# you can join a completed tournament
 
-Best Maps Tournament League table
 add nginx start and stop scripts
 test parameter needs to only work with true
-you can join a completed tournament
-you can forfeit a completed tournament
 check that you play the same tournaments
 add team name to tournament game gui
-add map id to tournament game gui
+do faq
