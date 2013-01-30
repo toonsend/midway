@@ -72,7 +72,6 @@ Adds a map to your team's list.  You need to upload at least one map before you 
 | 6 | x |   | x | x | x |   |   |   |   |   |
 | 7 |   |   |   |   |   |   |   |   |   |   |
 | 8 |   |   |   |   |   |   |   |   |   |   |
-| 8 |   |   |   |   |   |   |   |   |   |   |
 | 9 |   |   |   |   |   |   |   |   |   |   |
 ```
 
@@ -199,7 +198,7 @@ This plays your next move in the current game.  Games are started and ended auto
 * **opponent_id** Your opponents team id
 * **status** Status of the move can be "miss", "hit", "hit and destroyed"
 * **move** A two element array with the x and y position of your move
-* **game_status** Game status can be 'playing', 'ended'
+* **game_status** Game status can be 'in_progress', 'completed'
 * **moves** Current move count
 
 ###Example Request
@@ -217,7 +216,7 @@ curl -H "HTTP-MIDWAY-API-KEY: <%= @api_key %>" -H "Content-Type: application/jso
   "opponent_id": 3,
   "status": "hit",
   "move": [2,1],
-  "game_status": "ended",
+  "game_status": "completed",
   "moves": 34
 }
 ```
@@ -253,7 +252,7 @@ _none_
 * **game_id** The id of the current game
 * **grid**  The current grid with 'x' marking any hit position
 * **opponent_id** Your opponents team id
-* **game_status** Game status can be 'playing', 'ended'
+* **game_status** Game status can be 'in_progress', 'completed'
 * **moves** Current move count
 
 ###Example Request
