@@ -1,16 +1,19 @@
 <div class="masthead">
-  <% if current_user %>
   <ul class="nav nav-pills pull-right">
     <%= nav_link 'Home', root_url %>
-    <%= nav_link 'Teams', teams_path %>
-    <%= nav_link 'Tournaments', tournaments_path %>
-    <%= nav_link "Key", key_path %>
-    <%= nav_link "Api", api_path %>
+    <% if current_user %>
+      <%= nav_link 'Teams', teams_path %>
+      <%= nav_link 'Tournaments', tournaments_path %>
+      <%= nav_link "Key", key_path %>
+    <% else %>
+      <%= nav_link "SIGN UP!", new_user_registration_path %>
+      <%= nav_link "Sign In", new_user_session_path %>
+    <% end %>
     <%= nav_link "Faq", faq_path %>
+    <%= nav_link "Api", api_path %>
     <li>
       <%= link_to "Logout",  destroy_user_session_path, :method => :delete %>
     </li>
   </ul>
-  <% end %>
 </div>
 <h3 class="muted">Midway</h3>
