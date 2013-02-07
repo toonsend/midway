@@ -21,19 +21,7 @@ describe DashboardController do
 
     it "renders api key page" do
       get :key
-      response.should be_success      
-    end
-
-  end
-
-  describe "anonymous" do
-
-    it "redirects to login when trying to access dashboard pages" do
-      actions = [:index, :api, :key]
-      actions.each do |action|
-        get action
-        response.should be_redirect    
-      end
+      response.should be_success
     end
 
   end
