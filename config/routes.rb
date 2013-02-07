@@ -21,4 +21,5 @@ Midway::Application.routes.draw do
   match "/tournaments/:id/forfeit/:team_id" => "tournaments#forfeit_tournament", :as => :forfeit_tournament
 
   match "/teams/:team_id/game"              => "game#current_game"
+  match "/teams/:team_id/leave"             => "invites#leave", :as => :leave_team
 end

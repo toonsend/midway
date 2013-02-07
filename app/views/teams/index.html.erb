@@ -32,6 +32,8 @@
       <% end %>
 
       <%= render :partial => "invites_sent" %>
+      <hr />
+      <%= button_to "leave team", leave_team_path(@team, current_user), :confirm => "Are you sure you want to leave this team?" %>
 
     <% else %>
       <h3>Hello! Create or join a team to start a game.</h3>

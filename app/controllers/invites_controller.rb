@@ -38,4 +38,10 @@ class InvitesController < ApplicationController
     end
     redirect_to teams_path
   end
+
+  def leave
+    current_user.update_attribute(:team, nil)
+    redirect_to teams_path
+  end
+
 end
