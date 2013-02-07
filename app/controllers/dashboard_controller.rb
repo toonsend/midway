@@ -18,6 +18,9 @@ class DashboardController < ApplicationController
     @rc      = Redcarpet.new(template, *options).to_html
   end
 
+  def faq
+  end
+
   def key
     @api_key = current_user.get_api_key
     if current_user.team

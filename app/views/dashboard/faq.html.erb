@@ -1,0 +1,87 @@
+<p class="lead">What is it?</p>
+<p>
+  It's a game to test your coded bots against each other in a game of battleships.  The team with the least number of moves against the tournament maps will win the tournament.
+</p>
+
+<p class="lead">Can I build my bot in work time?</p>
+<p>
+  This is a fun extra curriculum activity, so only in your own time.
+</p>
+
+<p class="lead">What languages can I use?</p>
+<p>
+  The game api is done purely by http POST and GET requests.  As long as you can make a http call you can write a bot.  You could even compete manually via curl.
+</p>
+
+<p class="lead">What's the format of the tournament?</p>
+<p>
+  You'll play 3 maps from each opponent.  The total moves needed to sink all the ships will be added up and the team with the least number of moves wins.  Everyone will
+  play the same maps, obviously you won't play against your own uploaded maps.
+</p>
+
+<p class="lead">So I have to wait for my opponent to move before moving?</p>
+<p>
+  As soon as the tournament starts you can start to play your moves. You can play all your moves in one session.  The rotating moves is a
+  product of the board game and not actually needed for playing.
+</p>
+
+<p class="lead">How do I know what game I have to play?</p>
+<p>
+  The api has one play/move method, it automatically starts and ends your games and then tells you when you have no more games to play.
+</p>
+
+<p class="lead">What rules do we play?</p>
+<p>
+  No special rules.  The rules are the same as the boardgame.
+</p>
+
+<p class="lead">Can I place ships next to each other?</p>
+<p>
+  Yes.  The api will tell you that you've got a hit but not what ship you've hit.
+</p>
+
+<p class="lead">How can I test my bot?</p>
+<p>
+  If you pass test=true to the move api you can play as many test games as you want.
+</p>
+
+<p class="lead">Do I have to play in a team?</p>
+<p>
+  You have to be part of a team but it can be a team of one.
+</p>
+
+<p class="lead">What if a team don't complete all their games?</p>
+<p>
+  Any uncompleted games will automatically score 100 points.
+</p>
+
+<p class="lead">Do I have to be a developer to enter?</p>
+<p>
+  No way!  Open to everyone, even sys admins.
+</p>
+
+<p class="lead">Do you have an example of a bot?</p>
+<p>
+  Here's a <%= link_to 'simple bot', 'https://github.com/toonsend/battlebot/blob/master/battlebot.rb'%> that plays all the squares in order.
+</p>
+
+<p class="lead">I want to take part what should I do?</p>
+<p>
+  Sign up, upload 3 maps, and click join tournament before 22nd Feb.  The tournament will be played between Friday February 22nd 10am and Friday March 1st 10am. Winners will be announced on
+  March 1st.  This give everyone two weeks to write bots and register. The <%= link_to 'api', api_path %> docs are linked to at the top, they are quite thorough.
+</p>
+
+<p class="lead">Who wrote this and why?</p>
+<p>
+  It was written for fun in our own time by the Velti sixth floor tech team. We were going to play against ourselves but thought it would be a good way to get in touch with the wider Velti tech team.
+</p>
+
+<p class="lead">What if I disagree with your rules or I don't agree with your judging decision.</p>
+<p>
+  Yeah, well... tough.
+</p>
+
+<p class="lead">I've a question that's not answered by this FAQ</p>
+<p>
+  Drop a line to dtownsend AT velti.com
+</p>
