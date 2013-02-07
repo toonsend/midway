@@ -22,9 +22,9 @@ Toons/Jakub/Ben
 # Add deleted field to map
 # you can forfeit a completed tournament
 # you can join a completed tournament
+# check that you play the same tournaments
+# add team name to tournament game gui
 
 add nginx start and stop scripts
 test parameter needs to only work with true
-check that you play the same tournaments
-add team name to tournament game gui
 do faq

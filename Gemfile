@@ -24,6 +24,7 @@ group :development do
   gem 'thin', '~> 1.5.0'
   gem 'annotate', ">=2.5.0"
   gem 'quiet_assets'
+  gem 'meta_request', '0.2.1'
 end
 
 group :development, :test do
