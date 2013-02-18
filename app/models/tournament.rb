@@ -76,7 +76,9 @@ class Tournament < ActiveRecord::Base
       raise ExistingTournamentEnteredException.new("Team is already in a tournament")
     end
     if team.maps.size == 0
-      raise NoMapsUploadedException.new("A team with no maps can't enter a tournament")
+      # here we will generate 3 random maps for slackaz who did not want to prepare it!
+      1.upto(3) {  Map.get_random_map(team) }
+      #raise NoMapsUploadedException.new("A team with no maps can't enter a tournament")
     end
     unless open_to_entry?
       raise TournamentEntryClosedException.new("Tournament is closed to entries")
