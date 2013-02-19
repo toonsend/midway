@@ -102,7 +102,7 @@ describe Tournament do
 
   it "should allow teams to enter if they have no maps uploaded, in this case autogenerate 3 maps" do
     team       = FactoryGirl.create(:team)
-    tournament = FactoryGirl.create(:tournament)
+    tournament = FactoryGirl.create(:tournament, :max_rounds => 3)
     expect {
       tournament.enter_tournament(team)
     }.to_not raise_error(NoMapsUploadedException)

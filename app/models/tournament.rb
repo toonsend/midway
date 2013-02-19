@@ -67,18 +67,22 @@ class Tournament < ActiveRecord::Base
 
   def enter_tournament(team)
     if team_can_join?(team)
+      create_missing_maps(team)
       self.teams << team
+    end
+  end
+
+  # here we will generate up to 3 random maps for slackaz who did not want to prepare it!
+  def create_missing_maps(team)
+    number_of_maps_needed = self.max_rounds - team.maps.size
+    if number_of_maps_needed > 0
+      1.upto(number_of_maps_needed) {  Map.get_random_map(team) }
     end
   end
 
   def team_can_join?(team)
     unless TournamentTeam.active_tournament(team).nil?
       raise ExistingTournamentEnteredException.new("Team is already in a tournament")
-    end
-    if team.maps.size == 0
-      # here we will generate 3 random maps for slackaz who did not want to prepare it!
-      1.upto(3) {  Map.get_random_map(team) }
-      #raise NoMapsUploadedException.new("A team with no maps can't enter a tournament")
     end
     unless open_to_entry?
       raise TournamentEntryClosedException.new("Tournament is closed to entries")
