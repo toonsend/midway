@@ -100,14 +100,13 @@ describe Tournament do
     }.to change(TournamentTeam, :count).by(1)
   end
 
-  it "should not allow teams to enter if they have no maps uploaded" do
+  it "should allow teams to enter if they have no maps uploaded, in this case autogenerate 3 maps" do
     team       = FactoryGirl.create(:team)
     tournament = FactoryGirl.create(:tournament)
     expect {
       tournament.enter_tournament(team)
-    }.to raise_error(NoMapsUploadedException)
-    team.maps << FactoryGirl.create(:map)
-    tournament.enter_tournament(team)
+    }.to_not raise_error(NoMapsUploadedException)
+    team.maps.count.should == 3
   end
 
   it "should not allow teams to enter after the tournament is in progress" do
