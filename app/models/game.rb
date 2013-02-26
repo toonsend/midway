@@ -81,7 +81,11 @@ class Game < ActiveRecord::Base
   end
 
   def status
-    status, result = fire(ship_mappings, self.map.empty_game_grid, moves.clone)
+    if moves.empty?
+      result = move_state(nil, self.map.empty_game_grid)
+    else
+      _, result = fire(ship_mappings, self.map.empty_game_grid, moves.clone)
+    end
     result.delete('move')
     result.delete('status')
     result

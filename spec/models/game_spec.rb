@@ -165,6 +165,13 @@ describe Game do
       result['status'].should == 'miss'
     end
 
+    it "should return a game status if the game hasn't started" do
+      result = @game.status
+      result['grid'].each  do |line|
+        line.should == 'oooooooooo'
+      end
+    end
+
     describe "game ending" do
 
       it "should end game when all the ships are sunk" do
