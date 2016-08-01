@@ -5,7 +5,6 @@ gem 'rails', '3.2.9'
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
-  gem 'therubyracer', :platforms => :ruby
   gem 'uglifier', '>= 1.0.3'
 end
 
@@ -30,7 +29,6 @@ end
 group :development, :test do
   gem 'debugger'
   gem 'rspec-rails', "~> 2.11.4"
-  gem 'ZenTest', '~> 4.8.1'
   gem 'autotest-growl', '~> 0.2.16'
   gem 'autotest-rails-pure', '~> 4.1.2'
   gem 'sqlite3', '~> 1.3.4'
@@ -38,7 +36,7 @@ end
 
 group :test do
   gem 'factory_girl_rails', '~> 4.1.0'
-  gem 'simplecov', '~> 0.6.4', :require => false
+  gem 'simplecov', '~> 0.6.4', :require => true
   gem 'timecop', '~> 0.5.2'
   gem 'ci_reporter'
   gem 'webmock', '~> 1.8.11'
