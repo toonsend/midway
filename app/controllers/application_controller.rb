@@ -6,10 +6,9 @@ class ApplicationController < ActionController::Base
   def load_api
     api_key = request.headers['HTTP-MIDWAY-API-KEY'].to_s.strip
     Rails.logger.info("looking for #{params[:team_id]} with api key #{api_key}")
-    @team = Team.find_by_id(params[:team_id])
-    if @team
-      @user = @team.users.find_by_api_key(api_key)
-      unless @user
+    @user = User.first('team_id = ?', params[:team_id])
+    if @user
+      if @user.api_key != api_key
         render :json => { "error_code" => "INVALID_API_KEY", "message" => "The api key does not match the team_id" } and return
       end
     else

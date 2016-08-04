@@ -11,7 +11,7 @@ class MapsController < ApplicationController
   def create
     map = Map.new({
       :team_id => params[:team_id],
-      :grid    => params[:grid]
+      :grid    => JSON.parse(params[:grid])
     })
     if map.save
       render :json => {'id' => map.id}, :status => 200

@@ -11,9 +11,9 @@ Midway::Application.routes.draw do
   resources :tournaments
 
   root :to => "dashboard#index"
-  match "/api" => "dashboard#api",         :as => :api
   match "/key" => "dashboard#key",         :as => :key
   match "/faq" => "dashboard#faq",         :as => :faq
+  match "/scoreboard" => "dashboard#scoreboard",         :as => :faq
 
   match "/tournaments/:id/start"            => "tournaments#start_tournament",   :as => :start_tournament
   match "/tournaments/:id/end"              => "tournaments#end_tournament",     :as => :end_tournament
